@@ -16,7 +16,6 @@ import ProtectedRoute from './component/ProtectedRoute';
 function App() {
   const token = getCookie("token");
 
-
   return (
     <Router>
       <Box>
