@@ -31,7 +31,6 @@ const LoginPage = (props) => {
       dispatch(fetchAuth(payload))
         .unwrap()
         .then((promiseResult) => {
-          console.log(promiseResult)
           const [result, error] = promiseResult;
           if (error) {
             console.log(error);

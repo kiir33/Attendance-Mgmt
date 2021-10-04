@@ -1,7 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from 'axios';
-import auth from "./auth";
-import { setCookie } from "../../utils/cookies";
 
 export const fetchAuth = createAsyncThunk(
     "post/user",
@@ -41,7 +39,8 @@ const authSlice = createSlice({
     initialState,
     reducers: {
         toggleAuthenticated: (state, action) => {
-            return !state.authenticated
+            state.authenticated =  !state.authenticated;
+            state.userData = {};
         }
     },
     extraReducers: {
@@ -60,8 +59,8 @@ const authSlice = createSlice({
             }
         },
         [fetchAuth.rejected]: (state, action) => {
-            state.loading = false;
             console.log("rejected")
+            state.loading = false;
         }
     }
 })
