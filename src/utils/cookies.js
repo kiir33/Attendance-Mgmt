@@ -14,10 +14,14 @@ export const getCookie = (cname) => {
     return "";
 }
 
-export const setCookie = (cname, cvalue, expirationTime) => {
+export const setCookie = (cname, cvalue, expirationTime=0) => {
+    if(expirationTime !== 0 ){
     const d = new Date();
     d.setTime(d.getTime() + (expirationTime * 60 * 1000));
     let expires = "expires=" + d.toUTCString();
     document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+    }else{
+        document.cookie = cname + "=" + cvalue;
+    }
 }
 

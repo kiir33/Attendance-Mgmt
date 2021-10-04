@@ -6,7 +6,10 @@ import './App.css';
 import SideBar from "./component/SideBar"
 import Header from './component/Header';
 import LoginPage from "./pages/LoginPage"
+import AdminPage from "./pages/adminPages/index"
+import UserPage from "./pages/userPages/index"
 import { getCookie } from "./utils/cookies"
+import ProtectedRoute from './component/ProtectedRoute';
 
 
 
@@ -17,8 +20,11 @@ function App() {
   return (
     <Router>
       <Box>
-        <Route exact path="/login" component={LoginPage} />
-        <Route exact path="/" component={SideBar} />
+        <Switch>
+          <Route exact path="/login" component={LoginPage} />
+          <ProtectedRoute exact path="/" component={AdminPage} />
+          <Route path="*" component={() => "404 not found"} />
+        </Switch>
       </Box>
     </Router>
   )

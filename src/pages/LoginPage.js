@@ -3,7 +3,8 @@ import * as yup from 'yup';
 import { Container, Paper, Stack, Button, TextField, Typography } from '@mui/material';
 import { fetchAuth } from '../features/auth/authSlice';
 import { useDispatch } from 'react-redux';
-import auth from '../app/auth'
+import auth from '../features/auth/auth'
+import Header from '../component/Header';
 
 
 const validationSchema = yup.object({
@@ -37,7 +38,6 @@ const LoginPage = (props) => {
           } else {
             const token = result.attributes.auth_token;
             auth.login(token, () => {
-              console.log("hello")
               props.history.push('/');
             })
           }
@@ -45,9 +45,11 @@ const LoginPage = (props) => {
     },
   });
 
+  auth.isAuthenticated() && (props.history.push('/'))
 
   return (
     <>
+      <Header />
       <Container
         maxWidth="xs"
         sx={{

@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from 'axios';
-import auth from "../../app/auth";
+import auth from "./auth";
 import { setCookie } from "../../utils/cookies";
 
 export const fetchAuth = createAsyncThunk(
@@ -9,14 +9,14 @@ export const fetchAuth = createAsyncThunk(
         try {
             const url = "https://nameless-sands-43248.herokuapp.com/api/v1/login";
             const userData = await axios.post(url, payload)
-            return [ {...userData.data["data"]}, null];
+            return [{ ...userData.data["data"] }, null];
         }
         catch (error) {
             if (error.response) {
                 // The request was made and the server responded with a status code
                 // that falls out of the range of 2xx
-                const {data, status, headers} = error.response;
-                return [null, {data, status, headers}]
+                const { data, status, headers } = error.response;
+                return [null, { data, status, headers }]
             } else if (error.request) {
                 // The request was made but no response was received
                 // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
@@ -40,7 +40,9 @@ const authSlice = createSlice({
     name: "auth",
     initialState,
     reducers: {
-
+        toggleAuthenticated: (state, action) => {
+            return !state.authenticated
+        }
     },
     extraReducers: {
         [fetchAuth.pending]: (state, action) => {
@@ -53,7 +55,7 @@ const authSlice = createSlice({
                 state.error = error.data.error;
                 state.authenticated = false;
             } else {
-                state.userData = {...data};
+                state.userData = { ...data };
                 state.authenticated = true;
             }
         },
@@ -65,4 +67,5 @@ const authSlice = createSlice({
 })
 
 const { reducer, actions } = authSlice;
+export const { toggleAuthenticated } = actions;
 export default reducer;
