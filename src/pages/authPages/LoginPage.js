@@ -1,10 +1,13 @@
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import { Container, Paper, Stack, Button, TextField, Typography } from '@mui/material';
-import { fetchAuth } from '../features/auth/authSlice';
-import { useDispatch } from 'react-redux';
-import auth from '../features/auth/auth'
-import Header from '../component/Header';
+import { Box, Container, Paper, Stack, Button, TextField } from '@mui/material';
+import { fetchAuth } from '../../features/auth/authSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import auth from '../../features/auth/auth'
+import Header from '../../component/Header';
+import { useState } from 'react';
+import Message from '../../component/Message';
+import { Link } from 'react-router-dom';
 
 
 const validationSchema = yup.object({
@@ -19,7 +22,9 @@ const validationSchema = yup.object({
 });
 
 const LoginPage = (props) => {
+  const [messageVisibility, setMessageVisibility] = useState(false);
   const dispatch = useDispatch()
+  const state = useSelector(state => state.auth)
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -33,10 +38,11 @@ const LoginPage = (props) => {
         .then((promiseResult) => {
           const [result, error] = promiseResult;
           if (error) {
-            console.log(error);
+            setMessageVisibility(true);
           } else {
             const token = result.attributes.auth_token;
-            auth.login(token, () => {
+            const role = result.attributes.role;
+            auth.login(token, role, () => {
               props.history.push('/');
             })
           }
@@ -47,8 +53,9 @@ const LoginPage = (props) => {
   auth.isAuthenticated() && (props.history.push('/'))
 
   return (
-    <>
+    <Box sx={{ height: "100vh" }}>
       <Header />
+      <Message values={{ severity: "error", title: "", message: state.errorMessage }} display={messageVisibility ? "block" : "none"} />
       <Container
         maxWidth="xs"
         sx={{
@@ -94,18 +101,19 @@ const LoginPage = (props) => {
                 }}>
                 Login
               </Button>
-              <Button
-                variant="text"
-                sx={{
-                  m: "0 auto"
-                }}>
-                Forgot your password?
-              </Button>
+                <Button
+                  variant="text"
+                  sx={{
+                    m: "0 auto"
+                  }}
+                  href="/forgot-password">
+                  Forgot your password?
+                </Button>
             </Stack>
           </form>
         </Paper>
       </Container>
-    </>
+    </Box>
   );
 };
 

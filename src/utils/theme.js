@@ -19,17 +19,20 @@ export const theme = createTheme({
         gray: {
             main: "#a3a3a3"
         },
-        gradientBlue: {
-            main: "linear-gradient(to bottom right, #39C1FD, #18E7FE"
-        },
-        gradientPurple: {
-            main: "linear-gradient(to bottom right, #39C1FD, #18E7FE"
-        },
-        gradientRed: {
-            main: "linear-gradient(to bottom right, #39C1FD, #18E7FE"
-        },
-        gradientOrange: {
-            main: "linear-gradient(to bottom right, #39C1FD, #18E7FE"
-        },
-    },
+    }
 })
+
+export const gradientCollection = {
+    info: {
+        main: "linear-gradient(to bottom right, #39C1FD, #18E7FE)"
+    },
+    gradientPurple: {
+        main: "linear-gradient(to bottom right, #D7B7FF, #A078FF)"
+    },
+    danger: {
+        main: "linear-gradient(to bottom right, #F46173, #F28579)"
+    },
+    warning: {
+        main: "linear-gradient(to bottom right, #F57F28, #F6B44A)"
+    },
+}

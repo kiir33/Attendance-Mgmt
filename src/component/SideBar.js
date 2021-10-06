@@ -1,6 +1,7 @@
 import { Dashboard } from "@mui/icons-material";
 import { Box, Divider, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
 import { Component } from "react";
+import { theme } from "../utils/theme";
 
 export default class SideBar extends Component {
 
@@ -8,7 +9,7 @@ export default class SideBar extends Component {
 
   render() {
     return (
-      <Box sx={{maxWidth:250}}>
+      <Box sx={{bgcolor: 'primary.main', color: 'light.main', minHeight:'100%'}}>
         <List>
           <ListItem>
             <ListItemText>Welcome {"user"}</ListItemText>
@@ -18,7 +19,7 @@ export default class SideBar extends Component {
             return (<ListItem key={index}>
               <ListItemButton>
                 <ListItemIcon>
-                  <Dashboard />
+                  <Dashboard color="light"/>
                 </ListItemIcon>
                 <ListItemText>
                   {element}

@@ -1,12 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from 'axios';
+import { axiosInstance } from "../../config/axios.config";
 
 export const fetchAuth = createAsyncThunk(
-    "post/user",
+    "post/login",
     async (payload) => {
         try {
-            const url = "https://nameless-sands-43248.herokuapp.com/api/v1/login";
-            const userData = await axios.post(url, payload)
+            const url = "login";
+            const userData = await axiosInstance.post(url, payload)
             return [{ ...userData.data["data"] }, null];
         }
         catch (error) {
@@ -31,17 +31,14 @@ export const fetchAuth = createAsyncThunk(
 const initialState = {
     loading: false,
     userData: {},
-    authenticated: false,
+    errorMessage: ""
 }
 
 const authSlice = createSlice({
     name: "auth",
     initialState,
     reducers: {
-        toggleAuthenticated: (state, action) => {
-            state.authenticated =  !state.authenticated;
-            state.userData = {};
-        }
+        
     },
     extraReducers: {
         [fetchAuth.pending]: (state, action) => {
@@ -51,20 +48,19 @@ const authSlice = createSlice({
             state.loading = false;
             const [data, error] = action.payload;
             if (error) {
-                state.error = error.data.error;
-                state.authenticated = false;
+                state.errorMessage = error.data.errors[0].title;
             } else {
                 state.userData = { ...data };
-                state.authenticated = true;
+                state.errorMessage = "";
             }
         },
         [fetchAuth.rejected]: (state, action) => {
-            console.log("rejected")
+            state.error = action.payload
             state.loading = false;
         }
     }
 })
 
 const { reducer, actions } = authSlice;
-export const { toggleAuthenticated } = actions;
+export const {  } = actions;
 export default reducer;
