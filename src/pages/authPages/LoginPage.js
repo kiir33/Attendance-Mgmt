@@ -7,7 +7,7 @@ import auth from '../../features/auth/auth'
 import Header from '../../component/Header';
 import { useState } from 'react';
 import Message from '../../component/Message';
-import { setRole } from '../../features/rootSlice';
+import { setState } from '../../features/rootSlice';
 
 const validationSchema = yup.object({
   email: yup
@@ -39,10 +39,9 @@ const LoginPage = (props) => {
           if (error) {
             setMessageVisibility(true);
           } else {
-            const token = result.attributes.auth_token;
             const role = result.attributes.role;
-            dispatch(setRole(role));
-            auth.login(token, role, () => {
+            dispatch(setState(result.attributes));
+            auth.login({...result.attributes, id:result.id}, () => {
               props.history.push('/',role);
             })
           }

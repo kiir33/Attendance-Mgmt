@@ -1,19 +1,21 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    role: 3
+    data: {
+        role: 3
+    }
 }
 
 const root = createSlice({
     initialState,
     name: "root",
     reducers: {
-        setRole: (state, action) => {
-            state.role = action.payload;
+        setState: (state, action) => {
+            state.data =  action.payload;
         }
     }
 })
 
 const {reducer, actions} = root;
-export const {setRole} = actions;
+export const {setState} = actions;
 export default reducer;

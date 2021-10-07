@@ -95,14 +95,13 @@ const UserForm = (props) => {
             if (method === "post") {
                 dispatch(postNewUser(payload))
                     .unwrap()
-                    .then(propmiseResult => {
-                        const [result, error] = propmiseResult
+                    .then(promiseResult => {
+                        const [result, error] = promiseResult
                         if (!error) {
                             setMessage("user successfully created")
                             setMessageVisibility(true);
                             setMessageSeverity("info");
                         } else {
-                            console.log(error)
                             setMessage(error.message);
                             setMessageVisibility(true);
                             setMessageSeverity("warning");

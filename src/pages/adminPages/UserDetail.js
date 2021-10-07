@@ -1,8 +1,10 @@
 import { KeyboardReturn } from '@mui/icons-material';
-import { Avatar, Box, Divider, IconButton, Paper, Stack, Typography } from '@mui/material';
+import { Avatar, Box, Button, Divider, IconButton, Paper, Stack, Typography } from '@mui/material';
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import { fetchUserDetail } from '../../features/user/userDetailSlice';
+import Attendance from '../userPages/Attendance';
+import UserAttendance from '../userPages/Attendance'
 
 export default class UserDetail extends Component {
     constructor(props) {
@@ -62,7 +64,9 @@ export default class UserDetail extends Component {
                             Salary: {userDetails.salary}
                         </Typography>
                     </Paper>
+                    
                 </Stack>
+                <Attendance/>
             </Box>
         )
     }

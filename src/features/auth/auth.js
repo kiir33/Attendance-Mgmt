@@ -3,15 +3,17 @@ import { getCookie, setCookie } from '../../utils/cookies';
 
 
 const auth = {
-    login:(token,role, callback) => {
-        setCookie("token", token, 30);
-        setCookie("role",role, 30);
+    login:(attributes,callback) => {
+        setCookie("token", attributes.auth_token, 30);
+        setCookie("role",attributes.role, 30);
+        setCookie("userId", attributes.id, 30);
         callback();
     },
 
     logout:(callback) => {
         setCookie("token", "");
         setCookie("role", "");
+        setCookie("userId", "",)
         callback();
     },
 

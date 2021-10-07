@@ -21,6 +21,7 @@ import { gradientCollection, theme } from '../utils/theme';
 import { Link, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchUserDetail } from '../features/user/userDetailSlice';
+import { Button } from '@mui/material';
 
 
 function TablePaginationActions(props) {
@@ -146,36 +147,38 @@ export default function CustomPaginationActionsTable(props) {
                                                     </IconButton>
                                                 </Link> :
                                                 (button.type === "edit") ?
-                                                        <IconButton
-                                                            color="light"
-                                                            sx={{
-                                                                background: gradientCollection.warning.main,
-                                                                "&:hover": {
-                                                                    transform: "scale(1.1)",
+                                                    <IconButton
+                                                        color="light"
+                                                        sx={{
+                                                            background: gradientCollection.warning.main,
+                                                            "&:hover": {
+                                                                transform: "scale(1.1)",
+                                                            }
+                                                        }}
+                                                        onClick={() => {
+                                                            dispatch(fetchUserDetail(row.id))
+                                                                .unwrap()
+                                                                .then((data) => {
+                                                                    const [userData, error] = data
+                                                                    history.push(button.callback(`/users/edit`, row.id), { userData: userData.user, method: "patch" })
                                                                 }
-                                                            }}
-                                                            onClick={() => {
-                                                                    dispatch(fetchUserDetail(row.id))
-                                                                    .unwrap()
-                                                                    .then((data)=>{
-                                                                        const [userData, error] = data
-                                                                        history.push(button.callback(`/users/edit`, row.id), {userData: userData.user, method: "patch"})
-                                                                    }
-                                                                    );
-                                                                 
-                                                            }}
-                                                        >
-                                                            <Edit />
-                                                        </IconButton>
-                                                    :
-                                                    <IconButton color="light" sx={{
-                                                        background: gradientCollection.danger.main,
-                                                        "&:hover": {
-                                                            transform: "scale(1.1)",
-                                                        }
-                                                    }}>
-                                                        <Delete />
+                                                                );
+
+                                                        }}
+                                                    >
+                                                        <Edit />
                                                     </IconButton>
+                                                    : (button.type === "delete") ?
+                                                        <IconButton color="light" sx={{
+                                                            background: gradientCollection.danger.main,
+                                                            "&:hover": {
+                                                                transform: "scale(1.1)",
+                                                            }
+                                                        }}>
+                                                            <Delete />
+                                                        </IconButton>
+                                                        :
+                                                        null
                                             }
                                         </TableCell>
                                     )

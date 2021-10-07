@@ -22,13 +22,17 @@ import UserProfile from './pages/userPages/UserProfile'
 
 import ForgotPasswordPage from './pages/authPages/ForgotPasswordPage';
 import ResetPasswordPage from './pages/authPages/ResetPasswordPage';
+import { getCookie } from './utils/cookies';
 
 
 
 function App() {
-  const root = useSelector(state => state.root)
+  const state = useSelector(state =>state.root)
+  
+  const role = getCookie("role")
   const changeView = (user, admin) => {
-    return root.role === 3 ? user : admin;
+    console.log(role === "3" )
+    return role === "3" ? user : admin;
   }
 
   return (

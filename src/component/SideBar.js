@@ -3,6 +3,7 @@ import { Box, Divider, List, ListItem, ListItemButton, ListItemIcon, ListItemTex
 import { Component } from "react";
 import { connect } from "react-redux";
 import { Link, NavLink } from "react-router-dom";
+import { getCookie } from "../utils/cookies";
 import { theme } from "../utils/theme";
 
 export default class SideBar extends Component {
@@ -13,8 +14,7 @@ export default class SideBar extends Component {
 
     const adminNavLinks = ["Dashboard", "Employees", "Attendance", "Leave", "Report"];
     const userNavLinks = ["Dashboard", "User Profile", "Attendance", "Leave"];
-    const navLinks = this.props.role === 3 ? userNavLinks : adminNavLinks;
-    console.log(navLinks);
+    const navLinks = getCookie("role") === "3" ? userNavLinks : adminNavLinks;
 
     return (
       <Box sx={{ bgcolor: 'primary.main', color: 'light.main', height: '100%', minHeight: '100vh' }}>
