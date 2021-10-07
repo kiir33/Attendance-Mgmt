@@ -19,19 +19,24 @@ export default class index extends Component {
         return (
             <>
                 <Grid container>
+                    {/* <Router> */}
                     <Grid item md={2} sm={2}>
-                        <SideBar />
+                        <Route component={SideBar} />
                     </Grid>
                     <Grid item md={10} sm={10}>
                         <Header {...this.props} />
-                        <UserForm method="post"/>
-                    <Router>
-                        <Switch>
-                            <ProtectedRoute exact path={this.props.match.path} component={Employees} />
+                        {/* <UserForm method="post"/> */}
+                        {/* <Switch>
+                            <ProtectedRoute exact path={this.props.match.path} component={DashBoard} />
                             <ProtectedRoute exact path={`${this.props.match.path}users/:id`} component={UserDetail}/>
-                        </Switch>
-                    </Router>
+                            <ProtectedRoute exact path={`${this.props.match.path}newUser`} component={UserForm}/>
+                            <ProtectedRoute exact path={`${this.props.match.path}attendance`} component={Attendance}/>
+                            <ProtectedRoute path={`${this.props.match.path}employees`} component={Employees}/>
+                            <ProtectedRoute exact path={`${this.props.match.path}report`} component={Report}/>
+                            <ProtectedRoute exact path={`${this.props.match.path}leave`} component={Leave}/>
+                        </Switch> */}
                     </Grid>
+                    {/* </Router> */}
                 </Grid>
 
             </>

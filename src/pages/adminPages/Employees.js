@@ -1,15 +1,18 @@
 import { Component } from 'react'
-import { Box } from '@mui/material'
+import { Box, Button } from '@mui/material'
 import { connect } from 'react-redux'
 import CustomPaginationActionsTable from '../../component/Table';
 import { fetchAllUsers } from '../../features/allUser/allUserSlice'
-import { Route } from 'react-router-dom';
-
+import { BrowserRouter as Router, Switch, Link, Route } from 'react-router-dom';
+import ProtectedRoute from '../../component/ProtectedRoute';
+import UserDetail from './UserDetail';
+import UserForm from './UserForm';
 
 export default class Employees extends Component {
     constructor(props) {
         super(props);
         this.dispatch = this.props.dispatch;
+        this.history = this.props.history;
     }
 
     componentDidMount() {
@@ -20,10 +23,47 @@ export default class Employees extends Component {
         const employeeList = this.props.data
         const employeeFields = ["id", "name", "email", "gender", "role", "contact"]
         return (
-            <Box margin={6}>
-                <h1>Employees</h1>
-                    <CustomPaginationActionsTable data={employeeList} fields={employeeFields} buttons={["view", "edit", "delete"]} />
-            </Box>
+            <>
+                <Box margin={6}>
+                    <Link
+                        to={{
+                            pathname: `newUser`,
+                            state: {
+                                method: "post",
+                                from: this.props.location.path
+                            }
+                        }}
+                        style={{ textDecoration: "none" }}>
+                        <Button
+                            variant="contained"
+                            onClick={() => {
+
+                            }}>
+                            Add new user
+                        </Button>
+                    </Link>
+                    <CustomPaginationActionsTable
+                        data={employeeList}
+                        fields={employeeFields}
+                        buttons={
+                            [{
+                                type: "view",
+                                callback: (path, id) => {
+                                    return `${path}/${id}`
+                                }
+                            },
+                            {
+                                type: "edit", callback: (path, id) => {
+                                    return `${path}/${id}`
+                                }
+                            },
+                            {
+                                type: "delete", callback: (path, id) => { }
+                            }]
+                        }
+                    />
+                </Box>
+            </>
         )
     }
 }

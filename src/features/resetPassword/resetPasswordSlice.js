@@ -3,13 +3,14 @@ import { axiosInstance } from "../../config/axios.config";
 
 export const postEmail = createAsyncThunk(
     'post/email',
-    async (payload) => {
+    async (payload, rejectWithValue) => {
         try {
             const url = "/forgot_password";
             const result = await axiosInstance.post(url, payload);
             return [result.data, null]
         } catch (error) {
-            return [null, (error)];
+            const err = error.response.data;
+            return ([null, err])
         }
     }
 )
@@ -25,7 +26,7 @@ export const patchPassword = createAsyncThunk(
             return [result, null]
         }
         catch (error) {
-            const err = rejectWithValue(error).payload.response.data;
+            const err = error.response.data;
             return ([null, err])
         }
     }
@@ -67,7 +68,6 @@ const ForgotPasswordSlice = createSlice({
         [patchPassword.fulfilled]: (state, action) => {
             state.loading = false
             const [result, error] = action.payload;
-            console.log(result, error)
             if (error) {
                 state.error = error;
             } else {
@@ -77,7 +77,6 @@ const ForgotPasswordSlice = createSlice({
         [patchPassword.rejected]: (state, action) => {
             state.loading = false;
             state.error = action.payload;
-            console.log("rejected")
         }
     }
 })

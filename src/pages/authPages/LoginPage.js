@@ -2,13 +2,12 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { Box, Container, Paper, Stack, Button, TextField } from '@mui/material';
 import { fetchAuth } from '../../features/auth/authSlice';
-import { useDispatch, useSelector } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import auth from '../../features/auth/auth'
 import Header from '../../component/Header';
 import { useState } from 'react';
 import Message from '../../component/Message';
-import { Link } from 'react-router-dom';
-
+import { setRole } from '../../features/rootSlice';
 
 const validationSchema = yup.object({
   email: yup
@@ -24,7 +23,7 @@ const validationSchema = yup.object({
 const LoginPage = (props) => {
   const [messageVisibility, setMessageVisibility] = useState(false);
   const dispatch = useDispatch()
-  const state = useSelector(state => state.auth)
+  const state = useSelector(state => state)
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -42,8 +41,9 @@ const LoginPage = (props) => {
           } else {
             const token = result.attributes.auth_token;
             const role = result.attributes.role;
+            dispatch(setRole(role));
             auth.login(token, role, () => {
-              props.history.push('/');
+              props.history.push('/',role);
             })
           }
         })
@@ -55,7 +55,7 @@ const LoginPage = (props) => {
   return (
     <Box sx={{ height: "100vh" }}>
       <Header />
-      <Message values={{ severity: "error", title: "", message: state.errorMessage }} display={messageVisibility ? "block" : "none"} />
+      <Message values={{ severity: "error", title: "", message: state.auth.errorMessage }} display={messageVisibility ? "block" : "none"} />
       <Container
         maxWidth="xs"
         sx={{
@@ -119,3 +119,4 @@ const LoginPage = (props) => {
 
 
 export default LoginPage;
+

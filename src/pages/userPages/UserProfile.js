@@ -58,7 +58,7 @@ export default class UserDetail extends Component {
                         </Typography>
                         <Divider />
                         <Typography variant="body2">
-                            Gender: {userDetails.gender===1? "Male": "Female"}<br />
+                            Gender: {userDetails.gender===1 ? "Male" : "Female"}<br />
                             Salary: {userDetails.salary}
                         </Typography>
                     </Paper>

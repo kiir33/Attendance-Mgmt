@@ -21,6 +21,8 @@ const validationSchema = yup.object({
 });
 
 const ResetPasswordPage = (props) => {
+  const [message, setMessage] = useState("");
+  const [messageSeverity, setMessageSeverity] = useState("info");
   const [messageVisibility, setMessageVisibility] = useState(false);
   const dispatch = useDispatch()
   const state = useSelector(state => state.auth)
@@ -32,16 +34,33 @@ const ResetPasswordPage = (props) => {
     validationSchema: validationSchema,
     onSubmit: (values) => {
       const payload = { user: values }
-      console.log(values)
-      dispatch(patchPassword({...values}))
-    },
+      dispatch(patchPassword({ ...values }))
+        .unwrap()
+        .then(promiseResult => {
+          const [result, error] = promiseResult;
+          if (!error) {
+            setMessage(result.message)
+            setMessageVisibility(true);
+            props.history.push('/resetPassword')
+          } else {
+            setMessageSeverity("error")
+            setMessage(error.message)
+            setMessageVisibility(true);
+          }
+          setTimeout(() => {
+            setMessageSeverity("info");
+            setMessageVisibility(false);
+            setMessage("");
+          }, 5000)
+        })
+    }
   });
 
 
   return (
-    <Box sx={{height: "100vh"}}>
+    <Box sx={{ height: "100vh" }}>
       <Header />
-      <Message values={{severity: "error", title: "", message: state.errorMessage}} display={messageVisibility ? "block" : "none"} />
+      <Message values={{ severity: messageSeverity, title: "", message: message }} display={messageVisibility ? "block" : "none"} />
       <Container
         maxWidth="xs"
         sx={{
@@ -91,7 +110,7 @@ const ResetPasswordPage = (props) => {
           </form>
         </Paper>
       </Container>
-      </Box>
+    </Box>
   );
 };
 

@@ -4,7 +4,7 @@ export default class Dashboard extends Component {
     render() {
         return (
             <div>
-                <h1>Attendance</h1>
+                <h1>User Attendance</h1>
             </div>
         )
     }

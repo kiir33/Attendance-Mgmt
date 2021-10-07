@@ -21,7 +21,7 @@ export const fetchUserDetail = createAsyncThunk(
 
 export const postNewUser = createAsyncThunk(
     "post/users",
-    async (payload) => {
+    async (payload,{rejectWithValue}) => {
         try {
             const url = "/users"
             const AUTHTOKEN = getCookie("token");
@@ -30,26 +30,25 @@ export const postNewUser = createAsyncThunk(
             return [userData.data, null];
         }
         catch (error) {
-            return [null, JSON.parse(error)];
+            const err = rejectWithValue(error).payload.response.data;
+            return ([null, err])
         }
     }
 )
 
 export const updateExistingUser = createAsyncThunk(
     "patch/user",
-    async (payload) => {
+    async (payload,{rejectWithValue}) => {
         try {
             const url = "/users"
             const AUTHTOKEN = getCookie("token");
-            console.log("patch user")
-            console.log(payload)
             axiosInstance.defaults.headers.common["Authorization"] = AUTHTOKEN;
-            const userData = await axiosInstance.post(url, payload);
+            const userData = await axiosInstance.patch(url, payload);
             return [userData.data, null];
         }
         catch (error) {
-            return [null, JSON.parse(error)];
-        }
+            const err = rejectWithValue(error).payload.response.data;
+            return ([null, err])        }
     }
 )
 
@@ -93,7 +92,7 @@ const userDetailSlice = createSlice({
             if (!error) {
                 state.data = userData.user;
             } else {
-                state.error = error.message;
+                state.error = error;
             }
         },
         [postNewUser.rejected]: (state, action) => {

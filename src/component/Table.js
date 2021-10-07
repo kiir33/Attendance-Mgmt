@@ -18,8 +18,10 @@ import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import LastPageIcon from '@mui/icons-material/LastPage';
 import { Delete, Edit, RemoveRedEye } from '@mui/icons-material';
 import { gradientCollection, theme } from '../utils/theme';
-import { Link, useLocation, useHistory } from 'react-router-dom';
-import { Button } from '@mui/material';
+import { Link, useHistory } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchUserDetail } from '../features/user/userDetailSlice';
+
 
 function TablePaginationActions(props) {
     const theme = useTheme();
@@ -82,9 +84,6 @@ TablePaginationActions.propTypes = {
     rowsPerPage: PropTypes.number.isRequired,
 };
 
-function createData(name, calories, fat) {
-    return { name, calories, fat };
-}
 
 
 export default function CustomPaginationActionsTable(props) {
@@ -93,8 +92,10 @@ export default function CustomPaginationActionsTable(props) {
     const rows = props.data;
     const columns = props.fields;
     const buttons = props.buttons;
-    const location = useLocation();
     const history = useHistory();
+    const dispatch = useDispatch();
+    const state = useSelector(state => state.userDetail)
+
     // Avoid a layout jump when reaching the last page with empty rows.
     const emptyRows =
         page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
@@ -133,8 +134,8 @@ export default function CustomPaginationActionsTable(props) {
                                 buttons.map((button, buttonIndex) => {
                                     return (
                                         <TableCell key={buttonIndex}>
-                                            {(button === "view") ?
-                                                <Link to={{pathname: `${location.pathname}users/${row.id}`}}>
+                                            {(button.type === "view") ?
+                                                <Link to={{ pathname: button.callback("/users", row.id) }}>
                                                     <IconButton color="light" sx={{
                                                         background: gradientCollection.info.main,
                                                         "&:hover": {
@@ -144,15 +145,28 @@ export default function CustomPaginationActionsTable(props) {
                                                         <RemoveRedEye />
                                                     </IconButton>
                                                 </Link> :
-                                                (button === "edit") ?
-                                                    <IconButton color="light" sx={{
-                                                        background: gradientCollection.warning.main,
-                                                        "&:hover": {
-                                                            transform: "scale(1.1)",
-                                                        }
-                                                    }}>
-                                                        <Edit />
-                                                    </IconButton>
+                                                (button.type === "edit") ?
+                                                        <IconButton
+                                                            color="light"
+                                                            sx={{
+                                                                background: gradientCollection.warning.main,
+                                                                "&:hover": {
+                                                                    transform: "scale(1.1)",
+                                                                }
+                                                            }}
+                                                            onClick={() => {
+                                                                    dispatch(fetchUserDetail(row.id))
+                                                                    .unwrap()
+                                                                    .then((data)=>{
+                                                                        const [userData, error] = data
+                                                                        history.push(button.callback(`/users/edit`, row.id), {userData: userData.user, method: "patch"})
+                                                                    }
+                                                                    );
+                                                                 
+                                                            }}
+                                                        >
+                                                            <Edit />
+                                                        </IconButton>
                                                     :
                                                     <IconButton color="light" sx={{
                                                         background: gradientCollection.danger.main,
