@@ -57,7 +57,7 @@ const validationSchemaPatch = yup.object({
 
 const UserForm = (props) => {
     const dispatch = useDispatch();
-    const { method, userId } = props.location.state
+    const { method } = props.location.state
     const [message, setMessage] = useState("");
     const [messageVisibility, setMessageVisibility] = useState(false);
     const [messageSeverity, setMessageSeverity] = useState("info");
@@ -101,8 +101,12 @@ const UserForm = (props) => {
                             setMessage("user successfully created")
                             setMessageVisibility(true);
                             setMessageSeverity("info");
-                        } else {
-                            setMessage(error.message);
+                        } else if(error.data.code === '422') {
+                            setMessage(error.data.message.email);
+                            setMessageVisibility(true);
+                            setMessageSeverity("warning");
+                        } else{
+                            setMessage("Something went wrong");
                             setMessageVisibility(true);
                             setMessageSeverity("warning");
                         }
@@ -113,7 +117,26 @@ const UserForm = (props) => {
                         }, 5000)
                     })
             } else {
-                dispatch(updateExistingUser(payload, userId))
+                dispatch(updateExistingUser(payload))
+                .unwrap()
+                .then(promiseResult => {
+                    const [result, error] = promiseResult;
+                    if (!error) {
+                        setMessage("user updated Successfully")
+                        setMessageVisibility(true);
+                        setMessageSeverity("success");
+                    
+                    } else{
+                        setMessage("Something went wrong");
+                        setMessageVisibility(true);
+                        setMessageSeverity("warning");
+                    }
+                    setTimeout(() => {
+                        setMessage("");
+                        setMessageVisibility(false);
+                        setMessageSeverity("info");
+                    }, 5000)
+                })
             }
 
         },
@@ -125,7 +148,7 @@ const UserForm = (props) => {
             </IconButton>
             <Message values={{ severity: messageSeverity, title: message, message: "" }} display={messageVisibility ? "block" : "none"} />
             <Container
-                maxWidth="xs"
+                maxWidth="sm"
                 sx={{
                     display: "flex",
                     flexDirection: "column",
@@ -234,9 +257,8 @@ const UserForm = (props) => {
                                 size="medium"
                                 sx={{
                                     m: "0 auto",
-                                    maxWidth: "6px"
                                 }}>
-                                Add User
+                                {method==="post" ? "Add User" : "Update"}
                             </Button>
                         </Stack>
                     </form>

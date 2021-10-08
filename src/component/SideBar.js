@@ -1,10 +1,8 @@
-import { Dashboard } from "@mui/icons-material";
+import { Dashboard, People, Storage, OtherHouses, Assessment, Person, Message } from "@mui/icons-material";
 import { Box, Divider, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
 import { Component } from "react";
 import { connect } from "react-redux";
-import { Link, NavLink } from "react-router-dom";
 import { getCookie } from "../utils/cookies";
-import { theme } from "../utils/theme";
 
 export default class SideBar extends Component {
 
@@ -12,8 +10,18 @@ export default class SideBar extends Component {
 
   render() {
 
-    const adminNavLinks = ["Dashboard", "Employees", "Attendance", "Leave", "Report"];
-    const userNavLinks = ["Dashboard", "User Profile", "Attendance", "Leave"];
+    const adminNavLinks = [
+      { icon: <Dashboard color="light" />, text: "Dashboard" },
+      { icon: <People color="light" />, text: "Employees" },
+      { icon: <Storage color="light" />, text: "Attendance" },
+      { icon: <Message color="light" />, text: "Requests" },
+      { icon: <Assessment color="light" />, text: "Report" }];
+    const userNavLinks = [
+      { icon: <Dashboard color="light" />, text: "Dashboard" },
+      { icon: <Person color="light" />, text: "User Profile" },
+      { icon: <Storage color="light" />, text: "Attendance" },
+      { icon: <Message color="light" />, text: "Requests" },
+    ];
     const navLinks = getCookie("role") === "3" ? userNavLinks : adminNavLinks;
 
     return (
@@ -25,16 +33,16 @@ export default class SideBar extends Component {
           <Divider />
           {navLinks.map((element, index) => {
             return (<ListItem key={index}>
-                <ListItemButton onClick={()=>{
-                  this.props.history.push(`/${element.toLowerCase().replace(" ","")}`)
-                }}>
-                  <ListItemIcon>
-                    <Dashboard color="light" />
-                  </ListItemIcon>
-                  <ListItemText>
-                    {element}
-                  </ListItemText>
-                </ListItemButton>
+              <ListItemButton onClick={() => {
+                this.props.history.push(`/${element.text.toLowerCase().replace(" ", "")}`)
+              }}>
+                <ListItemIcon >
+                  {element.icon}
+                </ListItemIcon>
+                <ListItemText>
+                  {element.text}
+                </ListItemText>
+              </ListItemButton>
             </ListItem>)
           })}
         </List>
@@ -44,7 +52,7 @@ export default class SideBar extends Component {
 }
 
 const mapStateToProps = (state) => {
-  return {...state.root}
+  return { ...state.root }
 }
 
 SideBar = connect(mapStateToProps)(SideBar);

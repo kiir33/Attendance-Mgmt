@@ -3,14 +3,65 @@ import { getCookie } from "../../utils/cookies";
 import { axiosInstance } from "../../config/axios.config";
 
 export const getAllAttendance = createAsyncThunk(
-    "getall/attendance",
-    async (payload) => {
+        "get/allAttendance",
+        async (payload) => {
+            try {
+                const url = "all_attendances";
+                const AUTHTOKEN = getCookie("token");
+                axiosInstance.defaults.headers.common["Authorization"] = AUTHTOKEN;
+                const allAttendance = await axiosInstance.get(url);
+                return [allAttendance.data, null];
+            }
+            catch (error) {
+                if (error.response) {
+                    const { data, status, headers } = error.response;
+                    return [null, { data, status, headers }]
+                } else if (error.request) {
+                    return [null, error.request]
+                } else {
+                    return [null, error.message]
+                }
+
+            }
+
+        }
+    )
+
+
+export const getAttendance = createAsyncThunk(
+    "get/myAttendance",
+    async () => {
         try {
-            const url = (payload)? `attendances/${payload}` : "attendances";
+            const url = "attendances";
             const AUTHTOKEN = getCookie("token");
             axiosInstance.defaults.headers.common["Authorization"] = AUTHTOKEN;
             const allAttendance = await axiosInstance.get(url);
             return [allAttendance.data, null];
+        }
+        catch (error) {
+            if (error.response) {
+                const { data, status, headers } = error.response;
+                return [null, { data, status, headers }]
+            } else if (error.request) {
+                return [null, error.request]
+            } else {
+                return [null, error.message]
+            }
+
+        }
+
+    }
+)
+
+export const getUserAttendance = createAsyncThunk(
+    "get/userAttendance",
+    async (payload) => {
+        try {
+            const url = "user_attendances/" + payload;
+            const AUTHTOKEN = getCookie("token");
+            axiosInstance.defaults.headers.common["Authorization"] = AUTHTOKEN;
+            const attendance = await axiosInstance.get(url);
+            return [attendance.data, null];
         }
         catch (error) {
             if (error.response) {
@@ -57,10 +108,9 @@ export const patchAttendance = createAsyncThunk(
     "patch/attendance",
     async (payload = {}) => {
         try {
-            const {attId} = payload
+            const { attId } = payload
             const data = payload.data || {}
-            const url = "attendances/"+attId;
-            console.log(url)
+            const url = "attendances/" + attId;
             const AUTHTOKEN = getCookie("token");
             axiosInstance.defaults.headers.common["Authorization"] = AUTHTOKEN;
             const result = await axiosInstance.patch(url, data);
@@ -92,23 +142,55 @@ const initialState = {
 const attendanceSlice = createSlice({
     name: "attendance",
     initialState,
-    reducers:{
+    reducers: {
 
     },
     extraReducers: {
-        [getAllAttendance.pending] : (state, action) => {
+        [getAllAttendance.pending]: (state, action) => {
             state.loading = true;
         },
-        [getAllAttendance.fulfilled] : (state, action) => {
+        [getAllAttendance.fulfilled]: (state, action) => {
             state.loading = false;
             const [result, error] = action.payload;
-            if(!error){
+            if (!error) {
                 state.allAttendanceData = result.data;
-            }else{
+            } else {
                 state.error = error;
             }
         },
-        [getAllAttendance.rejected] : (state, action) => {
+        [getAllAttendance.rejected]: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
+        [getAttendance.pending]: (state, action) => {
+            state.loading = true;
+        },
+        [getAttendance.fulfilled]: (state, action) => {
+            state.loading = false;
+            const [result, error] = action.payload;
+            if (!error) {
+                state.allAttendanceData = result.data;
+            } else {
+                state.error = error;
+            }
+        },
+        [getAttendance.rejected]: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
+        [getUserAttendance.pending]: (state, action) => {
+            state.loading = true;
+        },
+        [getUserAttendance.fulfilled]: (state, action) => {
+            state.loading = false;
+            const [result, error] = action.payload;
+            if (!error) {
+                state.allAttendanceData = result.data;
+            } else {
+                state.error = error;
+            }
+        },
+        [getUserAttendance.rejected]: (state, action) => {
             state.loading = false;
             state.error = action.payload;
         },
@@ -116,39 +198,39 @@ const attendanceSlice = createSlice({
         [postAttendance.pending]: (state, action) => {
             state.loading = true;
         },
-        [postAttendance.fulfilled] : (state, action) => {
+        [postAttendance.fulfilled]: (state, action) => {
             state.loading = false;
             const [result, error] = action.payload;
-            if(!error){
+            if (!error) {
                 state.attendanceResult = result.data;
-                state.allAttendanceData[state.allAttendanceData.length-1] = result.data;
-            }else{
+                state.allAttendanceData[state.allAttendanceData.length - 1] = result.data;
+            } else {
                 state.error = error;
             }
         },
-        [postAttendance.rejected] : (state, action) => {
+        [postAttendance.rejected]: (state, action) => {
             state.loading = false;
             state.error = action.payload;
         },
         [patchAttendance.pending]: (state, action) => {
             state.loading = true;
         },
-        [patchAttendance.fulfilled] : (state, action) => {
+        [patchAttendance.fulfilled]: (state, action) => {
             state.loading = false;
             const [result, error] = action.payload;
-            if(!error){
+            if (!error) {
                 state.attendanceResult = result.data;
-                state.allAttendanceData[state.allAttendanceData.length-1] = result.data
-            }else{
+                state.allAttendanceData[state.allAttendanceData.length - 1] = result.data
+            } else {
                 state.error = error;
             }
         },
-        [patchAttendance.rejected] : (state, action) => {
+        [patchAttendance.rejected]: (state, action) => {
             state.loading = false;
             state.error = action.payload;
         },
     }
 })
 
-const {reducer, actions} = attendanceSlice;
+const { reducer, actions } = attendanceSlice;
 export default reducer;

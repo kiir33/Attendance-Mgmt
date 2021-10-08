@@ -17,10 +17,10 @@ export default class Attendance extends Component {
 
     render() {
         const attendanceList = this.props.allAttendanceData;
-        const attendanceFields = ["user_Id", "att_date", "clock_in", "clock_out", "leave_status"]
+        const attendanceFields = ["user_id", "att_date", "clock_in", "clock_out", "leave_status"]
         return (
             <div>
-                <CustomPaginationActionsTable data={attendanceList} fields={attendanceFields} buttons={["none"]} />
+                <CustomPaginationActionsTable data={attendanceList} fields={attendanceFields} buttons={[{type:"delete", callback:()=>{}}]} />
             </div>
         )
     }

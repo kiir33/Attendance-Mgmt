@@ -8,6 +8,7 @@ import Header from '../../component/Header';
 import { useState } from 'react';
 import Message from '../../component/Message';
 import { setState } from '../../features/rootSlice';
+import { Redirect } from 'react-router';
 
 const validationSchema = yup.object({
   email: yup
@@ -42,7 +43,7 @@ const LoginPage = (props) => {
             const role = result.attributes.role;
             dispatch(setState(result.attributes));
             auth.login({...result.attributes, id:result.id}, () => {
-              props.history.push('/',role);
+              props.history.push('/');
             })
           }
         })

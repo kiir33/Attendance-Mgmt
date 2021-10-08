@@ -4,15 +4,15 @@ import allUserReducer from '../features/allUser/allUserSlice'
 import userDetailReducer from '../features/user/userDetailSlice'
 import resetPasswordReducer from '../features/resetPassword/resetPasswordSlice'
 import attendanceReducer from '../features/attendance/attendanceSlice';
-import rootReducer from '../features/rootSlice';
+import requestReducer from '../features/request/requestSlice'
 
 export const store = configureStore({
   reducer: {
-    root: rootReducer,
     auth: authReducer,
     allUser: allUserReducer,
     userDetail: userDetailReducer,
     resetPassword: resetPasswordReducer,
-    attendance: attendanceReducer
+    attendance: attendanceReducer,
+    request: requestReducer,
   },
 });

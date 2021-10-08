@@ -12,16 +12,15 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import IconButton from '@mui/material/IconButton';
+import Button from '@mui/material/Button';
 import FirstPageIcon from '@mui/icons-material/FirstPage';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import LastPageIcon from '@mui/icons-material/LastPage';
 import { Delete, Edit, RemoveRedEye } from '@mui/icons-material';
-import { gradientCollection, theme } from '../utils/theme';
-import { Link, useHistory } from 'react-router-dom';
+import { gradientCollection, } from '../utils/theme';
+import { useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchUserDetail } from '../features/user/userDetailSlice';
-import { Button } from '@mui/material';
 
 
 function TablePaginationActions(props) {
@@ -93,7 +92,7 @@ export default function CustomPaginationActionsTable(props) {
     const rows = props.data;
     const columns = props.fields;
     const buttons = props.buttons;
-    const history = useHistory();
+    const location = useLocation();
     const dispatch = useDispatch();
     const state = useSelector(state => state.userDetail)
 
@@ -136,16 +135,17 @@ export default function CustomPaginationActionsTable(props) {
                                     return (
                                         <TableCell key={buttonIndex}>
                                             {(button.type === "view") ?
-                                                <Link to={{ pathname: button.callback("/users", row.id) }}>
-                                                    <IconButton color="light" sx={{
-                                                        background: gradientCollection.info.main,
-                                                        "&:hover": {
-                                                            transform: "scale(1.1)",
-                                                        }
-                                                    }}>
-                                                        <RemoveRedEye />
-                                                    </IconButton>
-                                                </Link> :
+                                                <IconButton color="light" sx={{
+                                                    background: gradientCollection.info.main,
+                                                    "&:hover": {
+                                                        transform: "scale(1.1)",
+                                                    }
+                                                }}
+                                                    onClick={() => { button.callback(row.id) }}
+                                                >
+                                                    <RemoveRedEye />
+                                                </IconButton>
+                                                :
                                                 (button.type === "edit") ?
                                                     <IconButton
                                                         color="light"
@@ -156,29 +156,32 @@ export default function CustomPaginationActionsTable(props) {
                                                             }
                                                         }}
                                                         onClick={() => {
-                                                            dispatch(fetchUserDetail(row.id))
-                                                                .unwrap()
-                                                                .then((data) => {
-                                                                    const [userData, error] = data
-                                                                    history.push(button.callback(`/users/edit`, row.id), { userData: userData.user, method: "patch" })
-                                                                }
-                                                                );
-
+                                                            button.callback(row.id);
                                                         }}
                                                     >
                                                         <Edit />
                                                     </IconButton>
                                                     : (button.type === "delete") ?
-                                                        <IconButton color="light" sx={{
-                                                            background: gradientCollection.danger.main,
-                                                            "&:hover": {
-                                                                transform: "scale(1.1)",
-                                                            }
-                                                        }}>
+                                                        <IconButton color="light"
+                                                            sx={{
+                                                                background: gradientCollection.danger.main,
+                                                                "&:hover": {
+                                                                    transform: "scale(1.1)",
+                                                                }
+                                                            }}
+                                                            onClick={() => { button.callback(row.id) }}>
                                                             <Delete />
                                                         </IconButton>
                                                         :
-                                                        null
+                                                        (button.type === "none") ?
+                                                            null
+                                                            :
+                                                            <Button
+                                                                variant="contained"
+                                                                onClick={() => { button.callback(row.id) }}
+                                                            >
+                                                                {button.type}
+                                                            </Button>
                                             }
                                         </TableCell>
                                     )

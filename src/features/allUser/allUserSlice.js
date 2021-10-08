@@ -4,7 +4,7 @@ import { getCookie } from "../../utils/cookies";
 
 export const fetchAllUsers = createAsyncThunk(
     "get/users",
-    async (payload) => {
+    async () => {
         try {
             const AUTHTOKEN = getCookie("token");
             axiosInstance.defaults.headers.common["Authorization"] = AUTHTOKEN;
@@ -33,11 +33,11 @@ const allUserSlice = createSlice({
         },
         [fetchAllUsers.fulfilled]: (state, action) => {
             state.loading = false;
-            const [data, error] = action.payload;
+            const [result, error] = action.payload;
             if (error) {
                 state.error = error;
             } else {
-                state.data = [ ...data.user ];
+                state.data = [ ...result.data ];
             }
         
         },

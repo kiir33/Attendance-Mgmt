@@ -13,7 +13,15 @@ export const fetchUserDetail = createAsyncThunk(
             return [userData.data, null];
         }
         catch (error) {
-            return [null, JSON.parse(error)]
+            if (error.response) {
+                const { data, status, headers } = error.response;
+                return [null, { data, status, headers }]
+            } else if (error.request) {
+                return [null, error.request]
+            } else {
+                return [null, error.message]
+            }
+
         }
 
     }
@@ -21,7 +29,7 @@ export const fetchUserDetail = createAsyncThunk(
 
 export const postNewUser = createAsyncThunk(
     "post/users",
-    async (payload,{rejectWithValue}) => {
+    async (payload, { rejectWithValue }) => {
         try {
             const url = "/users"
             const AUTHTOKEN = getCookie("token");
@@ -30,27 +38,64 @@ export const postNewUser = createAsyncThunk(
             return [userData.data, null];
         }
         catch (error) {
-            const err = rejectWithValue(error).payload.response.data;
-            return ([null, err])
+            if (error.response) {
+                const { data, status, headers } = error.response;
+                return [null, { data, status, headers }]
+            } else if (error.request) {
+                return [null, error.request]
+            } else {
+                return [null, error.message]
+            }
         }
     }
 )
 
 export const updateExistingUser = createAsyncThunk(
     "patch/user",
-    async (payload,{rejectWithValue}) => {
+    async (payload) => {
         try {
-            const url = "/users"
+            const url = `/users/${payload.user.id}`
             const AUTHTOKEN = getCookie("token");
             axiosInstance.defaults.headers.common["Authorization"] = AUTHTOKEN;
-            const userData = await axiosInstance.patch(url, payload);
+            const userData = await axiosInstance.patch(url, payload.user);
             return [userData.data, null];
         }
         catch (error) {
-            const err = rejectWithValue(error).payload.response.data;
-            return ([null, err])        }
+            if (error.response) {
+                const { data, status, headers } = error.response;
+                return [null, { data, status, headers }]
+            } else if (error.request) {
+                return [null, error.request]
+            } else {
+                return [null, error.message]
+            }
+        }
     }
 )
+
+export const deleteUser = createAsyncThunk(
+    "delete/user",
+    async (payload) => {
+        try {
+            const url = `users/${payload}`
+            const AUTHTOKEN = getCookie("token");
+            axiosInstance.defaults.headers.common["Authorization"] = AUTHTOKEN;
+            const result = await axiosInstance.delete(url);
+            return [result.data, null];
+        }catch(error){
+            if (error.response) {
+                const { data, status, headers } = error.response;
+                return [null, { data, status, headers }]
+            } else if (error.request) {
+                return [null, error.request]
+            } else {
+                return [null, error.message]
+            }
+        }
+    }
+)
+
+
 
 const initialState = {
     data: {},
@@ -73,7 +118,7 @@ const userDetailSlice = createSlice({
             state.loading = false;
             const [userData, error] = action.payload
             if (!error) {
-                state.data = userData.user;
+                state.data = userData.data;
             } else {
                 state.error = error.message;
             }
@@ -96,6 +141,38 @@ const userDetailSlice = createSlice({
             }
         },
         [postNewUser.rejected]: (state, action) => {
+            state.loading = false;
+            state.error = action.payload
+        },
+        [updateExistingUser.pending]: (state, action) => {
+            state.loading = true;
+        },
+        [updateExistingUser.fulfilled]: (state, action) => {
+            state.loading = false;
+            const [userData, error] = action.payload
+            if (!error) {
+                state.data = userData.user;
+            } else {
+                state.error = error;
+            }
+        },
+        [updateExistingUser.rejected]: (state, action) => {
+            state.loading = false;
+            state.error = action.payload
+        },
+        [deleteUser.pending]: (state, action) => {
+            state.loading = true;
+        },
+        [deleteUser.fulfilled]: (state, action) => {
+            state.loading = false;
+            const [userData, error] = action.payload
+            if (!error) {
+                state.data = userData.user;
+            } else {
+                state.error = error;
+            }
+        },
+        [deleteUser.rejected]: (state, action) => {
             state.loading = false;
             state.error = action.payload
         },

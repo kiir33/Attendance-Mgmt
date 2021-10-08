@@ -1,6 +1,6 @@
 import { Component } from 'react'
 import CustomPaginationActionsTable from '../../component/Table'
-import { getAllAttendance, patchAttendance, postAttendance } from '../../features/attendance/attendanceSlice';
+import { getAttendance, patchAttendance, postAttendance } from '../../features/attendance/attendanceSlice';
 import { connect } from 'react-redux';
 import { Button } from '@mui/material';
 import Message from '../../component/Message'
@@ -15,12 +15,11 @@ export default class Attendance extends Component {
             messageTitle: "",
             messageSeverity: "info",
             messageVisibility: "none",
-            attendanceList: this.props.allAttendanceData
         }
     }
 
     componentDidMount() {
-        this.dispatch(getAllAttendance())
+        this.dispatch(getAttendance())
     }
 
     inOutToggle(list) {
@@ -45,7 +44,6 @@ export default class Attendance extends Component {
             })
 
         } else {
-            console.log(error)
             this.setState({
                 messageTitle: error.data.message,
                 messageSeverity: "warning",
@@ -74,7 +72,7 @@ export default class Attendance extends Component {
                     message: "",
                 }} 
                 display= {this.state.messageVisibility}/>
-                <CustomPaginationActionsTable data={attendanceList} fields={attendanceFields} buttons={["none"]} />
+                <CustomPaginationActionsTable data={attendanceList} fields={attendanceFields} buttons={[{type: "none"}]} />
                 <Button
                     variant="contained"
                     onClick={() => {
@@ -84,7 +82,7 @@ export default class Attendance extends Component {
                                 .then((promiseResult) => {
                                     const [result, error] = promiseResult;
                                     this.promiseHandler(error);
-                                    this.dispatch(getAllAttendance())
+                                    this.dispatch(getAttendance())
                                 })
                             :
                             this.dispatch(postAttendance())
