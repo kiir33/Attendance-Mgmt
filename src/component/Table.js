@@ -94,7 +94,7 @@ export default function CustomPaginationActionsTable(props) {
     const buttons = props.buttons;
     const location = useLocation();
     const dispatch = useDispatch();
-    const state = useSelector(state => state.userDetail)
+    const allUser = useSelector(state => state.allUser.data)
 
     // Avoid a layout jump when reaching the last page with empty rows.
     const emptyRows =
@@ -110,7 +110,7 @@ export default function CustomPaginationActionsTable(props) {
     };
 
     return (
-        <TableContainer component={Paper} sx={{ maxWidth: 800 }}>
+        <TableContainer component={Paper}>
             <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
                 <TableHead>
                     <TableRow>

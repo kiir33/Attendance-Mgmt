@@ -3,6 +3,30 @@ import { axiosInstance } from "../../config/axios.config";
 import { getCookie } from "../../utils/cookies";
 
 
+export const fetchCurrentUser = createAsyncThunk(
+    "get/currentUser/",
+    async () => {
+        try {
+            const AUTHTOKEN = getCookie("token");
+            axiosInstance.defaults.headers.common["Authorization"] = AUTHTOKEN;
+            const userData = await axiosInstance.get(`profile`)
+            return [userData.data, null];
+        }
+        catch (error) {
+            if (error.response) {
+                const { data, status, headers } = error.response;
+                return [null, { data, status, headers }]
+            } else if (error.request) {
+                return [null, error.request]
+            } else {
+                return [null, error.message]
+            }
+
+        }
+
+    }
+)
+
 export const fetchUserDetail = createAsyncThunk(
     "get/user/",
     async (payload) => {
@@ -98,6 +122,7 @@ export const deleteUser = createAsyncThunk(
 
 
 const initialState = {
+    currentUserData: {},
     data: {},
     loading: false,
     error: "",
@@ -106,11 +131,28 @@ const userDetailSlice = createSlice({
     initialState,
     name: "userDetail",
     reducers: {
-        resetError: (state) => {
-            state.error = "";
+        resetUserDetail: (state) => {
+            state.currentUserData = {};
         }
     },
     extraReducers: {
+        [fetchCurrentUser.pending]: (state, action) => {
+            state.loading = true;
+        },
+        [fetchCurrentUser.fulfilled]: (state, action) => {
+            state.loading = false;
+            const [userData, error] = action.payload
+            if (!error) {
+                state.currentUserData = userData.data;
+            } else {
+                state.error = error.message;
+            }
+        },
+        [fetchCurrentUser.rejected]: (state, action) => {
+            state.loading = false;
+            state.error = action.payload
+        },
+
         [fetchUserDetail.pending]: (state, action) => {
             state.loading = true;
         },
@@ -181,5 +223,5 @@ const userDetailSlice = createSlice({
 
 const { reducer, actions } = userDetailSlice;
 
-export const { } = actions;
+export const {resetUserDetail } = actions;
 export default reducer;

@@ -53,7 +53,7 @@ export default class Employees extends Component {
         const employeeList = this.props.data
         const employeeFields = ["id", "name", "email", "gender", "role", "contact"]
         return (
-            <>
+            <Box margin={6}>
                 <Message values={{
                     title: this.state.messageTitle,
                     severity: this.state.messageSeverity
@@ -113,7 +113,7 @@ export default class Employees extends Component {
                         }
                     />
                 </Box>
-            </>
+            </Box>
         )
     }
 }

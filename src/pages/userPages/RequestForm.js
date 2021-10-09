@@ -22,7 +22,6 @@ const RequestForm = (props) => {
     const [from, setFrom] = useState(existingRequest ? new Date(existingRequest.from) : new Date());
     const [to, setTo] = useState(existingRequest ? new Date(existingRequest.to) : new Date());
     const [remarks, setRemarks] = useState(existingRequest ? existingRequest.remarks : "");
-    console.log(existingRequest)
 
 
     const handleSubmit = (event) => {

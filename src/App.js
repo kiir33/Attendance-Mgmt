@@ -1,6 +1,7 @@
 import React from 'react';
 import { Box } from '@mui/material';
 import { BrowserRouter as Router, Switch, Route, } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 import './App.css';
 import LoginPage from "./pages/authPages/LoginPage"
@@ -22,14 +23,16 @@ import RequestForm from './pages/userPages/RequestForm'
 
 import ForgotPasswordPage from './pages/authPages/ForgotPasswordPage';
 import ResetPasswordPage from './pages/authPages/ResetPasswordPage';
-import { getCookie } from './utils/cookies';
+import Notfound from './pages/pages/Notfound';
 
 
 function App() {
-  
+  const state = useSelector(state => state.userDetail)
+  console.log(state)
   const changeView = (user, admin) => {
-    const role = getCookie("role")
-    return role === "3" ? user : admin;
+    const role = state.currentUserData.role
+    console.log(role)
+    return role === 3 ? user : admin;
   }
 
   return (
@@ -40,7 +43,7 @@ function App() {
           <Route exact path="/forgot-password" component={ForgotPasswordPage} />
           <Route exact path="/resetPassword" component={ResetPasswordPage} />
 
-          <ProtectedRoute exact path='/' component={getCookie("role")==="3" ? UserDashBoard : AdminDashBoard} />
+          <ProtectedRoute exact path='/' component={changeView(UserDashBoard, AdminDashBoard)} />
           <ProtectedRoute exact path='/dashboard' component={changeView(UserDashBoard, AdminDashBoard)} />
           <ProtectedRoute exact path={`/users/:id`} component={AdminUserDetail} />
           <ProtectedRoute exact path="/userprofile" component={UserProfile}/>
@@ -53,7 +56,7 @@ function App() {
           <ProtectedRoute exact path={`/newRequest`} component={RequestForm} />
           <ProtectedRoute exact path={`/editRequest/:id`} component={RequestForm} />
 
-          <Route path="*" component={() => "404 not found"} />
+          <Route path="*" component={Notfound} />
         </Switch>
       </Box>
     </Router >

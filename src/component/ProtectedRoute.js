@@ -3,28 +3,30 @@ import { Redirect, Route } from 'react-router'
 import auth from '../features/auth/auth'
 import SideBar from './SideBar'
 import Header from './Header'
-import { Grid } from '@mui/material'
+import { Grid, Box, Stack } from '@mui/material'
 
 export default function ProtectedRoute({ component: Component, ...rest }) {
     return (
         <Route
             {...rest}
             render={props => {
-                
+
                 if (auth.isAuthenticated()) {
                     // setCookie("token", getCookie("token"), 30);
 
                     return (
                         <>
-                            <Grid container>
-                                <Grid item md={2} sm={2}>
+                            <Stack direction="row">
+                                <Box sx={{ width: "15vw", minWidth:"180px" }}>
                                     <SideBar {...props} />
-                                </Grid>
-                                <Grid item md={10} sm={10}>
+                                </Box>
+                                <Box >
                                     <Header {...props} />
-                                    <Component {...props} />
-                                </Grid>
-                            </Grid>
+                                    <Box sx={{width:"85vw"}}>
+                                        <Component {...props} />
+                                    </Box>
+                                </Box>
+                            </Stack>
 
                         </>
                     );

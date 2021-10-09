@@ -2,7 +2,7 @@ import { KeyboardReturn } from '@mui/icons-material';
 import { Avatar, Box, Divider, IconButton, Paper, Stack, Typography } from '@mui/material';
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
-import { fetchUserDetail } from '../../features/user/userDetailSlice';
+import { fetchCurrentUser, fetchUserDetail } from '../../features/user/userDetailSlice';
 
 export default class UserDetail extends Component {
     constructor(props) {
@@ -16,7 +16,7 @@ export default class UserDetail extends Component {
     }
 
     componentDidMount() {
-        this.dispatch(fetchUserDetail(this.userId))
+        this.dispatch(fetchCurrentUser())
             .unwrap()
             .then(promiseResult => {
                 const [result, error] = promiseResult;
