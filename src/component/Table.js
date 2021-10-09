@@ -19,8 +19,6 @@ import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import LastPageIcon from '@mui/icons-material/LastPage';
 import { Delete, Edit, RemoveRedEye } from '@mui/icons-material';
 import { gradientCollection, } from '../utils/theme';
-import { useLocation } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux'
 
 
 function TablePaginationActions(props) {
@@ -92,9 +90,7 @@ export default function CustomPaginationActionsTable(props) {
     const rows = props.data;
     const columns = props.fields;
     const buttons = props.buttons;
-    const location = useLocation();
-    const dispatch = useDispatch();
-    const allUser = useSelector(state => state.allUser.data)
+
 
     // Avoid a layout jump when reaching the last page with empty rows.
     const emptyRows =

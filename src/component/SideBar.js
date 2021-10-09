@@ -12,7 +12,6 @@ export default class SideBar extends Component {
   }
 
   render() {
-    console.log(this.props)
     const userDetail = this.props.currentUserData;
     const adminNavLinks = [
       { icon: <Dashboard color="light" />, text: "Dashboard" },

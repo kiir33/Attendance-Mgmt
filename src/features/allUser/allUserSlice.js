@@ -18,7 +18,8 @@ export const fetchAllUsers = createAsyncThunk(
 )
 
 const initialState = {
-    data: []
+    data: [],
+    mapIdToName: {}
 }
 
 const allUserSlice = createSlice({
@@ -38,6 +39,12 @@ const allUserSlice = createSlice({
                 state.error = error;
             } else {
                 state.data = [ ...result.data ];
+                // state.mapIdToName = result.data.map((elem)=> {
+                //     return {id: elem.id, name: elem.name};
+                // })
+                state.data.forEach(elem => {
+                    state.mapIdToName[`${elem.id}`] = elem.name
+                })
             }
         
         },
@@ -48,7 +55,6 @@ const allUserSlice = createSlice({
     }
 })
 
-const { reducer, actions } = allUserSlice;
+const { reducer } = allUserSlice;
 
 export default reducer;
-export const { } = actions;

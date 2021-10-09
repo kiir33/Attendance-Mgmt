@@ -1,9 +1,7 @@
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { Box, Container, Paper, Stack, Button, TextField } from '@mui/material';
-import { fetchAuth } from '../../features/auth/authSlice';
-import { useDispatch, useSelector } from 'react-redux';
-import auth from '../../features/auth/auth'
+import { useDispatch } from 'react-redux';
 import Header from '../../component/Header';
 import { useState } from 'react';
 import Message from '../../component/Message';
@@ -25,7 +23,6 @@ const ResetPasswordPage = (props) => {
   const [messageSeverity, setMessageSeverity] = useState("info");
   const [messageVisibility, setMessageVisibility] = useState(false);
   const dispatch = useDispatch()
-  const state = useSelector(state => state.auth)
   const formik = useFormik({
     initialValues: {
       token: '',
@@ -33,7 +30,6 @@ const ResetPasswordPage = (props) => {
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      const payload = { user: values }
       dispatch(patchPassword({ ...values }))
         .unwrap()
         .then(promiseResult => {

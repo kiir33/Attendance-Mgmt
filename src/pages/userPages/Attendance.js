@@ -4,6 +4,7 @@ import { getAttendance, patchAttendance, postAttendance } from '../../features/a
 import { connect } from 'react-redux';
 import { Button } from '@mui/material';
 import Message from '../../component/Message'
+import { Box } from '@mui/system';
 
 
 export default class Attendance extends Component {
@@ -60,11 +61,21 @@ export default class Attendance extends Component {
         }, 5000)
     }
     render() {
-        const attendanceList = this.props.allAttendanceData;
+        const attendanceList = this.props.allAttendanceData.map(elem => {
+            return{
+                ...elem,
+                clock_in: elem.clock_in.slice(11,19),
+                clock_out: elem.clock_out !== null ? elem.clock_out.slice(11, 19) : null,
+
+            }
+        });
         let clockOut = this.inOutToggle(attendanceList);
         const attendanceFields = ["att_date", "clock_in", "clock_out", "leave_status"]
         return (
-            <div>
+            <Box sx={{
+                p:5,
+                maxWidth: "800px"
+            }}>
                 <h3>Attendance</h3>
                 <Message values={{
                     severity: this.state.messageSeverity,
@@ -73,7 +84,9 @@ export default class Attendance extends Component {
                 }} 
                 display= {this.state.messageVisibility}/>
                 <CustomPaginationActionsTable data={attendanceList} fields={attendanceFields} buttons={[{type: "none"}]} />
+                <br/>
                 <Button
+                
                     variant="contained"
                     onClick={() => {
                         clockOut === null ?
@@ -95,7 +108,7 @@ export default class Attendance extends Component {
                     }}>
                     {clockOut === null ? "Clock Out" : "Clock In"}
                 </Button>
-            </div>
+            </Box>
         )
     }
 }

@@ -82,5 +82,5 @@ const ForgotPasswordSlice = createSlice({
 })
 
 
-const { reducer, actions } = ForgotPasswordSlice;
+const { reducer } = ForgotPasswordSlice;
 export default reducer;

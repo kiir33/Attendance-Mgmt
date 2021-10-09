@@ -2,13 +2,12 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { Box, Container, Paper, Stack, Button, TextField } from '@mui/material';
 import { fetchAuth } from '../../features/auth/authSlice';
-import { connect, useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import auth from '../../features/auth/auth'
 import Header from '../../component/Header';
 import { useState } from 'react';
 import Message from '../../component/Message';
 import { setState } from '../../features/rootSlice';
-import { Redirect } from 'react-router';
 
 const validationSchema = yup.object({
   email: yup
@@ -40,7 +39,6 @@ const LoginPage = (props) => {
           if (error) {
             setMessageVisibility(true);
           } else {
-            const role = result.attributes.role;
             dispatch(setState(result.attributes));
             auth.login({...result.attributes, id:result.id}, () => {
               props.history.push('/');

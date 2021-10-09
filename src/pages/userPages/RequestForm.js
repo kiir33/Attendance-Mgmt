@@ -1,4 +1,3 @@
-import * as yup from 'yup';
 import { useDispatch } from 'react-redux';
 import { useState } from 'react';
 import { useHistory } from 'react-router';

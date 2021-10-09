@@ -4,6 +4,7 @@ import { getMyRequest, getRequest } from '../../features/request/requestSlice'
 import { connect } from 'react-redux';
 import { Button } from '@mui/material';
 import { Link } from 'react-router-dom';
+import { Box } from '@mui/system';
 
 export default class Request extends Component {
     constructor(props) {
@@ -25,7 +26,11 @@ export default class Request extends Component {
         const requestList = this.props.myRequestData;
         const requestFields = ["from", "to", "approval_status"]
         return (
-            <div>
+            <Box
+            sx={{
+                p:5,
+                maxWidth: "800px"
+            }}>
                 <h1>User Leave Requests</h1>
                 <CustomPaginationActionsTable
                     data={requestList}
@@ -68,11 +73,14 @@ export default class Request extends Component {
                 >
                     <Button
                         variant="contained"
+                        sx={{
+                            marginTop: 4
+                        }}
                     >
                         Apply For Leave
                     </Button>
                 </Link>
-            </div>
+            </Box>
         )
     }
 }

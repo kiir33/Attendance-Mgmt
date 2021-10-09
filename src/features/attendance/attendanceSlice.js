@@ -232,5 +232,5 @@ const attendanceSlice = createSlice({
     }
 })
 
-const { reducer, actions } = attendanceSlice;
+const { reducer } = attendanceSlice;
 export default reducer;

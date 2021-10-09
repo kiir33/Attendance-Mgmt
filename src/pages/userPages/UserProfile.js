@@ -2,7 +2,7 @@ import { KeyboardReturn } from '@mui/icons-material';
 import { Avatar, Box, Divider, IconButton, Paper, Stack, Typography } from '@mui/material';
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
-import { fetchCurrentUser, fetchUserDetail } from '../../features/user/userDetailSlice';
+import { fetchCurrentUser } from '../../features/user/userDetailSlice';
 
 export default class UserDetail extends Component {
     constructor(props) {
@@ -20,55 +20,51 @@ export default class UserDetail extends Component {
             .unwrap()
             .then(promiseResult => {
                 const [result, error] = promiseResult;
-                if (error) {
-                    this.setState({
-                        error,
-                    });
-                } else {
-                    this.setState({
-                        userDetails: { ...result.user }
-                    });
-                }
             });
     }
     render() {
-        const userDetails = this.state.userDetails;
+        const userDetails = this.props.currentUserData;
         return (
-            <Box>
-                <IconButton onClick={()=> this.props.history.push('/employees')}>
-                    <KeyboardReturn/>
+            <Box sx={{ p: 5 }}>
+                <IconButton
+                    sx={{mb: 5}}
+                    onClick={() => this.props.history.goBack()}>
+                    <KeyboardReturn />
                 </IconButton>
-                <Stack direction="row" spacing={6}>
+                <Stack direction="row" spacing={3}>
                     <Avatar
                         alt="user profile pricture"
                         src="https://thispersondoesnotexist.com/image"
                         variant="rounded"
-                        sx={{ width: "15vw", height: "auto" }} />
+                        sx={{ width: "25%", height: "auto" }} />
                     <Divider orientation="vertical" />
-                    <Paper>
+                    <Box sx={{
+                        p:3,
+                        lineHeight: "20px"
+                    }}>
                         <Typography variant="h6">
                             ID: {userDetails.id} <br />
                             Name: {userDetails.name}
                         </Typography>
-                        <Divider />
+                        <Divider /><br/>
                         <Typography variant="body1">
-                            Email: {userDetails.name} <br />
-                            Contact: {userDetails.email} <br />
+                            Email: {userDetails.email} <br />
+                            Contact: {userDetails.contact} <br />
                             role: {userDetails.role === 1 ? "SuperUser" : userDetails.role === 2 ? "Admin" : "User"}
                         </Typography>
-                        <Divider />
+                        <Divider /><br/>
                         <Typography variant="body2">
-                            Gender: {userDetails.gender===1 ? "Male" : "Female"}<br />
+                            Gender: {userDetails.gender === 1 ? "Male" : "Female"}<br />
                             Salary: {userDetails.salary}
                         </Typography>
-                    </Paper>
+                    </Box>
                 </Stack>
             </Box>
         )
     }
 }
 const mapStateToProps = (state) => {
-    return { ...state.UserDetail }
+    return { ...state.userDetail }
 }
 
 UserDetail = connect(mapStateToProps)(UserDetail);

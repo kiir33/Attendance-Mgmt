@@ -1,12 +1,11 @@
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { Box, Container, Paper, Stack, Button, TextField, Typography } from '@mui/material';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import Header from '../../component/Header';
 import { useState } from 'react';
 import Message from '../../component/Message';
 import { postEmail } from '../../features/resetPassword/resetPasswordSlice';
-import { useHistory } from 'react-router';
 
 
 const validationSchema = yup.object({
@@ -21,7 +20,6 @@ const ForgotPasswordPage = (props) => {
     const [message, setMessage] = useState("");
     const [messageSeverity, setMessageSeverity] = useState("info");
     const dispatch = useDispatch();
-    const history = useHistory();
     const formik = useFormik({
         initialValues: {
             email: '',

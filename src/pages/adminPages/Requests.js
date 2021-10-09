@@ -21,7 +21,6 @@ export default class Requests extends Component {
     }
 
     promiseHandler(result, error) {
-        console.log(result)
         if (!error) {
             this.setState({
                 messageTitle: "Attendance Successfully Recorded",
@@ -48,41 +47,52 @@ export default class Requests extends Component {
 
 
     render() {
-        const requestList = this.props.allRequestData;
+        let requestList = this.props.allRequestData.map(elem => {
+            return {
+                ...elem,
+                user_id: this.props.allUser.mapIdToName[elem.user_id]
+            }
+        });
+
         const requestFields = ["user_id", "from", "to", "approval_status", "approved_by"]
-        console.log(requestList)
         return (
             <div>
                 <h1>Leave Requests</h1>
                 <Message values={{
-                severity: this.state.messageSeverity,
-                title: this.state.messageTitle, message: ""
-            }}
-                display={this.state.messageVisibility} />
+                    severity: this.state.messageSeverity,
+                    title: this.state.messageTitle, message: ""
+                }}
+                    display={this.state.messageVisibility} />
                 <RequestTable
-                    fields={ requestFields }
+                    fields={requestFields}
                     data={requestList}
                     buttons={[
+                        {
+                            type: "view",
+                            callback: (id) => {
+                                this.history.push(`/requests/${id}`)
+                            }
+                        },
                         {
                             type: "Approve",
                             callback: (id) => {
                                 this.dispatch(approveRequest(id))
-                                .unwrap()
-                                .then((promiseResult)=>{
-                                    const [result, error] = promiseResult;
-                                    this.promiseHandler(result, error)
-                                });
+                                    .unwrap()
+                                    .then((promiseResult) => {
+                                        const [result, error] = promiseResult;
+                                        this.promiseHandler(result, error)
+                                    });
                             }
                         },
                         {
                             type: "Reject",
-                            callback:(id)=>{
+                            callback: (id) => {
                                 this.dispatch(rejectRequest(id))
-                                .unwrap()
-                                .then((promiseResult)=>{
-                                    const [result, error] = promiseResult;
-                                    this.promiseHandler(result, error)
-                                });;
+                                    .unwrap()
+                                    .then((promiseResult) => {
+                                        const [result, error] = promiseResult;
+                                        this.promiseHandler(result, error)
+                                    });;
                             }
                         }
                     ]} />
@@ -93,7 +103,7 @@ export default class Requests extends Component {
 }
 
 const mapStateToProps = (state) => {
-    return { ...state.request }
+    return { ...state.request, allUser:state.allUser }
 }
 
 Requests = connect(mapStateToProps)(Requests);

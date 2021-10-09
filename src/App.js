@@ -12,14 +12,16 @@ import AdminAttendance from './pages/adminPages/Attendance'
 import AdminDashBoard from './pages/adminPages/Dashboard'
 import AdminLeave from './pages/adminPages/Requests'
 import AdminEmployees from './pages/adminPages/Employees'
-import AdminReport from './pages/adminPages/Report'
 import AdminUserForm from './pages/adminPages/UserForm'
+import AdminRequestView from './pages/adminPages/RequestView';
+
 
 import UserDashBoard from './pages/userPages/Dashboard'
 import UserAttendance from './pages/userPages/Attendance'
 import UserLeave from './pages/userPages/Requests'
 import UserProfile from './pages/userPages/UserProfile'
 import RequestForm from './pages/userPages/RequestForm'
+import UserRequestView from './pages/userPages/RequestView';
 
 import ForgotPasswordPage from './pages/authPages/ForgotPasswordPage';
 import ResetPasswordPage from './pages/authPages/ResetPasswordPage';
@@ -28,11 +30,9 @@ import Notfound from './pages/pages/Notfound';
 
 function App() {
   const state = useSelector(state => state.userDetail)
-  console.log(state)
   const changeView = (user, admin) => {
     const role = state.currentUserData.role
-    console.log(role)
-    return role === 3 ? user : admin;
+    return role <= 2 ? admin : user;
   }
 
   return (
@@ -51,10 +51,10 @@ function App() {
           <ProtectedRoute exact path={`/users/edit/:id`} component={AdminUserForm} />
           <ProtectedRoute exact path={`/attendance`} component={changeView(UserAttendance, AdminAttendance)} />
           <ProtectedRoute exact path={`/employees`} component={AdminEmployees} />
-          <ProtectedRoute exact path={`/report`} component={AdminReport} />
           <ProtectedRoute exact path={`/requests`} component={changeView(UserLeave, AdminLeave)} />
           <ProtectedRoute exact path={`/newRequest`} component={RequestForm} />
           <ProtectedRoute exact path={`/editRequest/:id`} component={RequestForm} />
+          <ProtectedRoute exact path={`/requests/:id`} component={changeView(UserRequestView, AdminRequestView)} />
 
           <Route path="*" component={Notfound} />
         </Switch>

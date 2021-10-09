@@ -3,10 +3,12 @@ import { createTheme } from "@mui/material";
 export const theme = createTheme({
     palette: {
         primary: {
-            main: "#0748A6"
+            main: "#0748A6",
+            contrastText: "#f2f2f2"
         },
         secondary: {
-            main: "#94C0FF"
+            main: "#94C0FF",
+            contrastText: "#f2f2f2"
         },
         dark: {
             main: "#333333",

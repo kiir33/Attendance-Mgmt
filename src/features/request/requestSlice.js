@@ -32,6 +32,7 @@ export const getRequest = createAsyncThunk(
     async (payload) => {
         try {
             const url = "requests/"+ payload;
+            console.log(url)
             const AUTHTOKEN = getCookie("token");
             axiosInstance.defaults.headers.common["Authorization"] = AUTHTOKEN;
             const allAttendance = await axiosInstance.get(url);
@@ -209,7 +210,7 @@ export const rejectRequest = createAsyncThunk(
 
 const initialState = {
     allRequestData: [],
-    requestresult: {},
+    requestResult: {},
     myRequestData: [],
     loading: false,
     error: {},
@@ -323,5 +324,5 @@ const requestSlice = createSlice({
     }
 })
 
-const { reducer, actions } = requestSlice;
+const { reducer } = requestSlice;
 export default reducer;

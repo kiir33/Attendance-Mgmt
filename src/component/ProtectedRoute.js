@@ -3,7 +3,7 @@ import { Redirect, Route } from 'react-router'
 import auth from '../features/auth/auth'
 import SideBar from './SideBar'
 import Header from './Header'
-import { Grid, Box, Stack } from '@mui/material'
+import { Box, Stack } from '@mui/material'
 
 export default function ProtectedRoute({ component: Component, ...rest }) {
     return (
@@ -12,7 +12,6 @@ export default function ProtectedRoute({ component: Component, ...rest }) {
             render={props => {
 
                 if (auth.isAuthenticated()) {
-                    // setCookie("token", getCookie("token"), 30);
 
                     return (
                         <>

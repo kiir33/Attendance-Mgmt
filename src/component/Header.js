@@ -1,5 +1,5 @@
-import { Calculate, Logout } from '@mui/icons-material'
-import { Box, AppBar, Toolbar, Typography, IconButton, Icon, Stack } from '@mui/material'
+import { Logout } from '@mui/icons-material'
+import { Box, AppBar, Toolbar, IconButton, } from '@mui/material'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import auth from '../features/auth/auth'
