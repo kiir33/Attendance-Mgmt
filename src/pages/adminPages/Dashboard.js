@@ -187,7 +187,7 @@ export default class Dashboard extends Component {
                                                     </Typography>
                                                     <Typography variant="body2"
                                                         color="dark.main">
-                                                        {item.from + "-" + item.to}
+                                                        {"from: " + item.from + " to: " + item.to}
                                                     </Typography>
                                                     <Typography
                                                         color="dark.main">
