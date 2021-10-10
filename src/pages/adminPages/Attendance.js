@@ -63,7 +63,7 @@ export default class Attendance extends Component {
             attendanceList = (attendanceList.map(elem => {
                 return {
                     ...elem,
-                    clock_in: elem.clock_in.slice(11, 19),
+                    clock_in: elem.clock_in !== null ? elem.clock_in.slice(11, 19) : null,
                     clock_out: elem.clock_out !== null ? elem.clock_out.slice(11, 19) : null,
                     user_id: this.props.allUser.mapIdToName[elem.user_id],
                 }

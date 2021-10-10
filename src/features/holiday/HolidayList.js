@@ -31,7 +31,7 @@ const HolidayList = () => {
           textDecoration: "none"
         }}
         >
-          <Button variant="contained">
+          <Button variant="contained" sx={{m:4, mb: 0}}>
             Add new Holiday
           </Button>
         </Link>

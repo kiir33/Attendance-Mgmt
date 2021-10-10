@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import RequestTable from '../../component/Table'
 import { approveRequest, getAllRequest, rejectRequest } from '../../features/request/requestSlice';
 import Message from '../../component/Message';
+import {Box} from '@mui/material'
 
 export default class Requests extends Component {
     constructor(props) {
@@ -56,7 +57,7 @@ export default class Requests extends Component {
 
         const requestFields = ["user_id", "from", "to", "approval_status", "approved_by"]
         return (
-            <div>
+            <Box m={2}>
                 <h1>Leave Requests</h1>
                 <Message values={{
                     severity: this.state.messageSeverity,
@@ -97,7 +98,7 @@ export default class Requests extends Component {
                         }
                     ]} />
 
-            </div>
+            </Box>
         )
     }
 }
