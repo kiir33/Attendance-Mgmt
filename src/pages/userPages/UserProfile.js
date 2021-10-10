@@ -25,12 +25,13 @@ export default class UserDetail extends Component {
     render() {
         const userDetails = this.props.currentUserData;
         return (
-            <Box sx={{ p: 5 }}>
+            <>
                 <IconButton
                     sx={{mb: 5}}
                     onClick={() => this.props.history.goBack()}>
                     <KeyboardReturn />
                 </IconButton>
+            <Box sx={{ p: 5 }}>
                 <Stack direction="row" spacing={3}>
                     <Avatar
                         alt="user profile pricture"
@@ -60,6 +61,7 @@ export default class UserDetail extends Component {
                     </Box>
                 </Stack>
             </Box>
+            </>
         )
     }
 }

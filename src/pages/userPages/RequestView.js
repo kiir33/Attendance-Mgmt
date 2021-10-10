@@ -1,8 +1,10 @@
-import { Box, Typography, Divider } from '@mui/material'
+import { Box, Typography, Divider, IconButton,  } from '@mui/material'
 import { unwrapResult } from '@reduxjs/toolkit';
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import { getRequest } from '../../features/request/requestSlice';
+import { KeyboardReturn } from '@mui/icons-material';
+
 
 export default class RequestView extends Component {
 
@@ -20,6 +22,7 @@ export default class RequestView extends Component {
     }
 
     render() {
+        console.log(this.props)
         const requestDetail = this.props.request.requestResult
         return (
             <Box sx={{
@@ -27,6 +30,11 @@ export default class RequestView extends Component {
                 lineHeight: "20px",
                 maxWidth: "30vw"
             }}>
+                <IconButton
+                    sx={{mb: 5}}
+                    onClick={() => this.props.history.goBack()}>
+                    <KeyboardReturn />
+                </IconButton>
                 <Typography variant="h6">
                     ID: {requestDetail.id} <br />
                 </Typography>
