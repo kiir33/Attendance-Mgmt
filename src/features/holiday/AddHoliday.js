@@ -15,10 +15,11 @@ const AddHoliday = (props) => {
   const history = useHistory();
   const { method, data } = props.location.state;
   const [title, setTitle] = useState(data.title ? data.title : "");
+  const [description, setDescription] = useState(data.description ? data.description : "");
   const [date, setDate] = useState(data.date ? new Date(data.date) : new Date());
   const handleSubmit = (event) => {
     event.preventDefault()
-    const payload = { title, date };
+    const payload = { title, date, description };
 
     method === "post" ?
       dispatch(postHoliday(payload))
@@ -82,9 +83,20 @@ const AddHoliday = (props) => {
             }
             }
           />
+          <TextField
+            margin="normal"
+            id="description"
+            name="description"
+            label="Description"
+            value={description}
+            onChange={(e) => {
+              setDescription(e.target.value)
+            }
+            }
+          />
           <LocalizationProvider dateAdapter={AdapterDateFns}>
             <DatePicker
-              label="Basic example"
+              label="Date"
               value={date}
               onChange={(newValue) => {
                 setDate(newValue);

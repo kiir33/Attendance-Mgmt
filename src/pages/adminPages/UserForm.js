@@ -72,7 +72,7 @@ const UserForm = (props) => {
     } : {
         name: '',
         email: '',
-        password: '',
+        password: 'password123',
         gender: '',
         role: '',
         contact: '',
@@ -189,21 +189,7 @@ const UserForm = (props) => {
                                     helperText={formik.touched.email && formik.errors.email}
                                 />
                             </FormControl>
-                            {method === "post" &&
-                                <FormControl>
-                                    <TextField
-                                        margin="normal"
-                                        id="password"
-                                        name="password"
-                                        label="Password"
-                                        type="password"
-                                        value={formik.values.password}
-                                        onChange={formik.handleChange}
-                                        error={formik.touched.password && Boolean(formik.errors.password)}
-                                        helperText={formik.touched.password && formik.errors.password}
-                                    />
-                                </FormControl>
-                            }
+                            
                             <FormControl component="fieldset">
                                 <FormLabel component="legend">Gender</FormLabel>
                                 <RadioGroup

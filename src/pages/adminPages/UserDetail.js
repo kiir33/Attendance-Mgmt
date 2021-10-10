@@ -67,7 +67,16 @@ export default class UserDetail extends Component {
     render() {
         const userDetails = this.props.data;
         const attendanceFields = ["att_date", "clock_in", "clock_out", "leave_status"]
-        const attendanceList = this.props.allAttendanceData;
+        let attendanceList = this.props.allAttendanceData;
+        attendanceList= (attendanceList.map(elem => {
+            return {
+                ...elem,
+                clock_in: elem.clock_in !== null ? elem.clock_in.slice(11, 19) : null,
+                clock_out: elem.clock_out !== null ? elem.clock_out.slice(11, 19) : null,
+                user_id: this.props.allUser.mapIdToName[elem.user_id],
+            }
+        })
+        )
         return (
             <Box>
                 <Message
