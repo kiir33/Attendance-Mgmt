@@ -5,6 +5,7 @@ import userDetailReducer from '../features/user/userDetailSlice'
 import resetPasswordReducer from '../features/resetPassword/resetPasswordSlice'
 import attendanceReducer from '../features/attendance/attendanceSlice';
 import requestReducer from '../features/request/requestSlice'
+import holidayReducer from '../features/holiday/holidaySlice'
 
 export const store = configureStore({
   reducer: {
@@ -14,5 +15,6 @@ export const store = configureStore({
     resetPassword: resetPasswordReducer,
     attendance: attendanceReducer,
     request: requestReducer,
+    holiday: holidayReducer,
   },
 });

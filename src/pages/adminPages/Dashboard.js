@@ -148,7 +148,7 @@ export default class Dashboard extends Component {
                                     return (
                                         <ListItem key={index}>
                                             <ListItemText>
-                                                <Typography variant="body2">
+                                                <Typography variant="body1">
                                                     {this.props.allUser.mapIdToName.user_id}
                                                 </Typography>
                                             </ListItemText>
@@ -180,11 +180,21 @@ export default class Dashboard extends Component {
                                     {this.filterByPendingRequest(this.props.request.allRequestData).map((item, index) => {
                                         return (
                                             <ListItem key={index}>
+                                                <Divider/>
                                                 <ListItemText>
-                                                    <Typography variant="body2">
-                                                        {"> " + this.props.allUser.mapIdToName[item.user_id]}
+                                                    <Typography variant="body1" color="dark.main">
+                                                        {this.props.allUser.mapIdToName[item.user_id]}
+                                                    </Typography>
+                                                    <Typography variant="body2"
+                                                        color="dark.main">
+                                                        {item.from + "-" + item.to}
+                                                    </Typography>
+                                                    <Typography
+                                                        color="dark.main">
+                                                        {item.remarks.slice(0, 20) + "..."}
                                                     </Typography>
                                                 </ListItemText>
+                                                <Divider />
                                             </ListItem>
                                         )
                                     })}

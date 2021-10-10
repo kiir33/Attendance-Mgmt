@@ -12,18 +12,15 @@ export default class RequestView extends Component {
     }
 
     componentDidMount(){
-        console.log("dispatch")
         this.props.dispatch(getRequest(this.requestId))
         .unwrap()
         .then(promiseResult=>{
             const [result, error]= promiseResult;
-            console.log(result, error)
         });
     }
 
     render() {
         const requestDetail = this.props.request.requestResult
-        console.log(this.props)
         return (
             <Box sx={{
                 p:3,

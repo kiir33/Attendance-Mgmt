@@ -1,23 +1,59 @@
 import { Component } from 'react'
 import CustomPaginationActionsTable from '../../component/Table'
-import { getAllAttendance } from '../../features/attendance/attendanceSlice';
+import { getAllAttendance, deleteAttendance } from '../../features/attendance/attendanceSlice';
 import { fetchAllUsers } from '../../features/allUser/allUserSlice';
 import { connect } from 'react-redux';
 import { Box } from '@mui/system';
 import Notfound from '../pages/Notfound';
-
+import Message from '../../component/Message'
 
 export default class Attendance extends Component {
     constructor(props) {
         super(props);
         this.dispatch = this.props.dispatch;
         this.location = this.props.location;
+        this.state = {
+            messageTitle: "",
+            messageSeverity: "info",
+            messageVisibility: "none"
+        }
     }
 
     componentDidMount() {
         this.dispatch(getAllAttendance()).then(() => {
             this.dispatch(fetchAllUsers());
         })
+    }
+
+
+    promiseHandler = (result, error) => {
+        if (!error) {
+            this.setState({
+                messageTitle: "Record Deleted",
+                messageSeverity: "success",
+                messageVisibility: "block"
+            })
+
+        } else if (error.data.message) {
+            this.setState({
+                message: JSON.stringify(error.data.message),
+                messageSeverity: "Warning",
+                messageVisibility: "block"
+            })
+        } else {
+            this.setState({
+                message: "oops!! Something Went Wrong",
+                messageSeverity: "Warning",
+                messageVisibility: "block"
+            })
+        }
+        setTimeout(() => {
+            this.setState({
+                message: "",
+                messageSeverity: "info",
+                messageVisibility: "none"
+            })
+        }, 5000)
     }
 
     render() {
@@ -36,12 +72,29 @@ export default class Attendance extends Component {
         }
         const attendanceFields = ["user_id", "att_date", "clock_in", "clock_out", "leave_status"]
 
-        if(this.props.userDetail.currentUserData.role >= 3){
-            return <Notfound/>
-        }else{
+        if (this.props.userDetail.currentUserData.role >= 3) {
+            return <Notfound />
+        } else {
             return (
                 <Box sx={{ margin: 6 }}>
-                    <CustomPaginationActionsTable data={attendanceList} fields={attendanceFields} buttons={[{ type: "delete", callback: () => { } }]} />
+                    <Message values={{
+                        title: this.state.messageTitle,
+                        severity: this.state.messageSeverity
+                    }}
+                    display={this.state.messageVisibility}
+                    />
+                    <CustomPaginationActionsTable
+                        data={attendanceList}
+                        fields={attendanceFields}
+                        buttons={[{ type: "delete", callback: (id) => { 
+                            this.dispatch(deleteAttendance({attId:id}))
+                            .unwrap()
+                            .then(promiseResult=> {
+                                const [result, error] = promiseResult;
+                                this.promiseHandler(result, error);
+                                this.dispatch(getAllAttendance());
+                            })
+                        } }]} />
                 </Box>
             )
         }

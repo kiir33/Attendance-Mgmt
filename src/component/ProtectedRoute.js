@@ -16,12 +16,12 @@ export default function ProtectedRoute({ component: Component, ...rest }) {
                     return (
                         <>
                             <Stack direction="row">
-                                <Box sx={{ width: "15vw", minWidth:"180px" }}>
+                                <Box >
                                     <SideBar {...props} />
                                 </Box>
                                 <Box >
                                     <Header {...props} />
-                                    <Box sx={{width:"85vw"}}>
+                                    <Box>
                                         <Component {...props} />
                                     </Box>
                                 </Box>

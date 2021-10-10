@@ -129,7 +129,30 @@ export const patchAttendance = createAsyncThunk(
     }
 )
 
+export const deleteAttendance = createAsyncThunk(
+    "delete/attendance",
+    async (payload) => {
+        try {
+            const { attId } = payload
+            const url = "attendances/" + attId;
+            const AUTHTOKEN = getCookie("token");
+            axiosInstance.defaults.headers.common["Authorization"] = AUTHTOKEN;
+            const result = await axiosInstance.delete(url);
+            return [result.data, null];
+        }
+        catch (error) {
+            if (error.response) {
+                const { data, status, headers } = error.response;
+                return [null, { data, status, headers }]
+            } else if (error.request) {
+                return [null, error.request]
+            } else {
+                return [null, error.message]
+            }
+        }
 
+    }
+)
 
 const initialState = {
     allAttendanceData: [],

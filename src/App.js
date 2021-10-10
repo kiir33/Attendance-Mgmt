@@ -14,6 +14,8 @@ import AdminLeave from './pages/adminPages/Requests'
 import AdminEmployees from './pages/adminPages/Employees'
 import AdminUserForm from './pages/adminPages/UserForm'
 import AdminRequestView from './pages/adminPages/RequestView';
+import AdminHolidayPage from './features/holiday/HolidayList';
+import AdminHolidayForm from './features/holiday/AddHoliday';
 
 
 import UserDashBoard from './pages/userPages/Dashboard'
@@ -55,6 +57,9 @@ function App() {
           <ProtectedRoute exact path={`/newRequest`} component={RequestForm} />
           <ProtectedRoute exact path={`/editRequest/:id`} component={RequestForm} />
           <ProtectedRoute exact path={`/requests/:id`} component={changeView(UserRequestView, AdminRequestView)} />
+          <ProtectedRoute exact path={`/holidays`} component={AdminHolidayPage} />
+          <ProtectedRoute exact path={`/newHoliday`} component={AdminHolidayForm} />
+          <ProtectedRoute exact path={`/holiday/edit/:id`} component={AdminHolidayForm} />
 
           <Route path="*" component={Notfound} />
         </Switch>

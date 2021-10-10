@@ -77,10 +77,12 @@ export default class UserDetail extends Component {
                     }}
                     display={this.state.messageVisibility}
                 />
-                <IconButton onClick={() => this.props.history.push('/employees')}>
+                <IconButton
+                    sx={{ margin: 2 }}
+                    onClick={() => this.props.history.push('/employees')}>
                     <KeyboardReturn />
                 </IconButton>
-                <Stack direction="row" spacing={6}>
+                <Stack direction="row" spacing={2} margin={2}>
                     <Avatar
                         alt="user profile pricture"
                         src="https://thispersondoesnotexist.com/image"
@@ -105,17 +107,20 @@ export default class UserDetail extends Component {
                         </Typography>
                     </Paper>
                 </Stack>
-                <CustomPaginationActionsTable
-                    data={attendanceList}
-                    fields={attendanceFields}
-                    buttons={[
-                        {
-                            type: "delete",
-                            callback: () => { }
-                        }
-                    ]} />
+                <Box sx={{margin: 2, marginBottom: 0}}>
+                    <CustomPaginationActionsTable
+                        data={attendanceList}
+                        fields={attendanceFields}
+                        buttons={[
+                            {
+                                type: "delete",
+                                callback: () => { }
+                            }
+                        ]} />
+                </Box>
                 <Button
                     variant="contained"
+                    sx= {{margin: 2}}
                     onClick={() => {
                         this.clockOut(attendanceList) ?
                             this.dispatch(patchAttendance({ attId: this.latestAttendance(attendanceList).id, data: { user_id: this.userId } }))

@@ -28,16 +28,22 @@ export default class SideBar extends Component {
     const navLinks = getCookie("role") === "3" ? userNavLinks : adminNavLinks;
 
     return (
-      <Box sx={{ bgcolor: 'primary.main', color: 'light.main', height: '100%', minHeight: '100vh' }}>
+      <Box sx={{
+        bgcolor: 'primary.main',
+        color: 'light.main',
+        height: '100%',
+        minHeight: '100vh',
+        width: '200px'
+      }}>
         <List>
           <ListItem>
             <ListItemText>
               <Typography variant="body1">
-                Welcome <br/> {userDetail.name}
-                <br/>
+                Welcome <br /> {userDetail.name}
+                <br />
               </Typography>
-              <Divider/>
-              <br/>
+              <Divider />
+              <br />
               <Typography variant="body2">
                 Email: {userDetail.email}
               </Typography>

@@ -82,7 +82,7 @@ const UserForm = (props) => {
 
     const formik = useFormik({
         initialValues,
-        validationSchema: method==="post"? validationSchemaPost: validationSchemaPatch,
+        validationSchema: method === "post" ? validationSchemaPost : validationSchemaPatch,
         onSubmit: (values) => {
             const payload = {
                 user: {
@@ -101,11 +101,11 @@ const UserForm = (props) => {
                             setMessage("user successfully created")
                             setMessageVisibility(true);
                             setMessageSeverity("info");
-                        } else if(error.data.code === '422') {
+                        } else if (error.data.code === '422') {
                             setMessage(error.data.message.email);
                             setMessageVisibility(true);
                             setMessageSeverity("warning");
-                        } else{
+                        } else {
                             setMessage("Something went wrong");
                             setMessageVisibility(true);
                             setMessageSeverity("warning");
@@ -118,25 +118,25 @@ const UserForm = (props) => {
                     })
             } else {
                 dispatch(updateExistingUser(payload))
-                .unwrap()
-                .then(promiseResult => {
-                    const [result, error] = promiseResult;
-                    if (!error) {
-                        setMessage("user updated Successfully")
-                        setMessageVisibility(true);
-                        setMessageSeverity("success");
-                    
-                    } else{
-                        setMessage("Something went wrong");
-                        setMessageVisibility(true);
-                        setMessageSeverity("warning");
-                    }
-                    setTimeout(() => {
-                        setMessage("");
-                        setMessageVisibility(false);
-                        setMessageSeverity("info");
-                    }, 5000)
-                })
+                    .unwrap()
+                    .then(promiseResult => {
+                        const [result, error] = promiseResult;
+                        if (!error) {
+                            setMessage("user updated Successfully")
+                            setMessageVisibility(true);
+                            setMessageSeverity("success");
+
+                        } else {
+                            setMessage("Something went wrong");
+                            setMessageVisibility(true);
+                            setMessageSeverity("warning");
+                        }
+                        setTimeout(() => {
+                            setMessage("");
+                            setMessageVisibility(false);
+                            setMessageSeverity("info");
+                        }, 5000)
+                    })
             }
 
         },
@@ -146,7 +146,12 @@ const UserForm = (props) => {
             <IconButton onClick={() => history.push('/employees')}>
                 <KeyboardReturn />
             </IconButton>
-            <Message values={{ severity: messageSeverity, title: message, message: "" }} display={messageVisibility ? "block" : "none"} />
+            <Message
+                values={{
+                    severity: messageSeverity,
+                    title: message, message: ""
+                }}
+                display={messageVisibility ? "block" : "none"} />
             <Container
                 maxWidth="sm"
                 sx={{
@@ -258,7 +263,7 @@ const UserForm = (props) => {
                                 sx={{
                                     m: "0 auto",
                                 }}>
-                                {method==="post" ? "Add User" : "Update"}
+                                {method === "post" ? "Add User" : "Update"}
                             </Button>
                         </Stack>
                     </form>

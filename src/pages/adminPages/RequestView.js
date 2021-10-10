@@ -15,7 +15,6 @@ export default class RequestView extends Component {
     }
 
     render() {
-        console.log(this.props)
         const requestDetail = this.props.request.requestResult ;
         return (
             <Box sx={{

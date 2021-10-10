@@ -2,11 +2,11 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { getCookie } from "../../utils/cookies";
 import { axiosInstance } from "../../config/axios.config";
 
-export const getAllRequest = createAsyncThunk(
-    "getall/request",
+export const getHolidays = createAsyncThunk(
+    "getall/holiday",
     async () => {
         try {
-            const url = "all_requests";
+            const url = "holidays";
             const AUTHTOKEN = getCookie("token");
             axiosInstance.defaults.headers.common["Authorization"] = AUTHTOKEN;
             const allAttendance = await axiosInstance.get(url);
@@ -27,8 +27,8 @@ export const getAllRequest = createAsyncThunk(
     }
 )
 
-export const getRequest = createAsyncThunk(
-    "get/request",
+export const getHoliday = createAsyncThunk(
+    "get/holiday",
     async (payload) => {
         try {
             const url = "requests/"+ payload;
@@ -52,16 +52,15 @@ export const getRequest = createAsyncThunk(
     }
 )
 
-
-export const getMyRequest = createAsyncThunk(
-    "get/myRequest",
-    async () => {
+export const deleteHoliday = createAsyncThunk(
+    "delete/holiday",
+    async (payload) => {
         try {
-            const url = "requests";
+            const url = "holidays/"+ payload;
             const AUTHTOKEN = getCookie("token");
             axiosInstance.defaults.headers.common["Authorization"] = AUTHTOKEN;
-            const allAttendance = await axiosInstance.get(url);
-            return [allAttendance.data, null];
+            const result = await axiosInstance.delete(url);
+            return [result.data, null];
         }
         catch (error) {
             if (error.response) {
@@ -78,36 +77,13 @@ export const getMyRequest = createAsyncThunk(
     }
 )
 
-export const getUserRequest = createAsyncThunk(
-    "get/userRequest",
+
+
+export const postHoliday= createAsyncThunk(
+    "post/holiday",
     async (payload) => {
         try {
-            const url = "user_requests/" + payload;
-            const AUTHTOKEN = getCookie("token");
-            axiosInstance.defaults.headers.common["Authorization"] = AUTHTOKEN;
-            const request = await axiosInstance.get(url);
-            return [request.data, null];
-        }
-        catch (error) {
-            if (error.response) {
-                const { data, status, headers } = error.response;
-                return [null, { data, status, headers }]
-            } else if (error.request) {
-                return [null, error.request]
-            } else {
-                return [null, error.message]
-            }
-
-        }
-
-    }
-)
-
-export const postRequest = createAsyncThunk(
-    "post/request",
-    async (payload) => {
-        try {
-            const url = "requests";
+            const url = "holidays";
             const AUTHTOKEN = getCookie("token");
             axiosInstance.defaults.headers.common["Authorization"] = AUTHTOKEN;
             const result = await axiosInstance.post(url, payload);
@@ -129,13 +105,13 @@ export const postRequest = createAsyncThunk(
 )
 
 
-export const patchRequest = createAsyncThunk(
-    "patch/request",
+export const patchHoliday = createAsyncThunk(
+    "patch/holiday",
     async (payload) => {
         try {
-            const { requestId } = payload
+            const { holidayId } = payload
             const data = payload.data
-            const url = "requests/" + requestId;
+            const url = "holidays/" + holidayId;
             const AUTHTOKEN = getCookie("token");
             axiosInstance.defaults.headers.common["Authorization"] = AUTHTOKEN;
             const result = await axiosInstance.patch(url, data);
@@ -155,93 +131,44 @@ export const patchRequest = createAsyncThunk(
 )
 
 
-export const approveRequest = createAsyncThunk(
-    "approve/request",
-    async (payload) => {
-        try {
-            const url = "approve_request/" + payload;
-            const AUTHTOKEN = getCookie("token");
-            axiosInstance.defaults.headers.common["Authorization"] = AUTHTOKEN;
-            const result = await axiosInstance.get(url);
-            return [result.data, null];
-        }
-        catch (error) {
-            if (error.response) {
-                const { data, status, headers } = error.response;
-                return [null, { data, status, headers }]
-            } else if (error.request) {
-                return [null, error.request]
-            } else {
-                return [null, error.message]
-            }
 
-        }
-
-    }
-)
-
-export const rejectRequest = createAsyncThunk(
-    "reject/request",
-    async (payload) => {
-        try {
-            const url = "reject_request/" + payload;
-            const AUTHTOKEN = getCookie("token");
-            axiosInstance.defaults.headers.common["Authorization"] = AUTHTOKEN;
-            const result = await axiosInstance.get(url);
-            return [result.data, null];
-        }
-        catch (error) {
-            if (error.response) {
-                const { data, status, headers } = error.response;
-                return [null, { data, status, headers }]
-            } else if (error.request) {
-                return [null, error.request]
-            } else {
-                return [null, error.message]
-            }
-
-        }
-
-    }
-)
 
 
 
 const initialState = {
-    allRequestData: [],
-    requestResult: {},
-    myRequestData: [],
+    allHolidayData: [],
+    holidayResult: {},
     loading: false,
     error: {},
 }
 
-const requestSlice = createSlice({
-    name: "request",
+const holidaySlice = createSlice({
+    name: "holiday",
     initialState,
     reducers: {
 
     },
     extraReducers: {
-        [getAllRequest.pending]: (state, action) => {
+        [getHolidays.pending]: (state, action) => {
             state.loading = true;
         },
-        [getAllRequest.fulfilled]: (state, action) => {
+        [getHolidays.fulfilled]: (state, action) => {
             state.loading = false;
             const [result, error] = action.payload;
             if (!error) {
-                state.allRequestData = result.data;
+                state.allHolidayData = result.data;
             } else {
                 state.error = error;
             }
         },
-        [getAllRequest.rejected]: (state, action) => {
+        [getHolidays.rejected]: (state, action) => {
             state.loading = false;
             state.error = action.payload;
         },
-        [getRequest.pending]: (state, action) => {
+        [getHoliday.pending]: (state, action) => {
             state.loading = true;
         },
-        [getRequest.fulfilled]: (state, action) => {
+        [getHoliday.fulfilled]: (state, action) => {
             state.loading = false;
             const [result, error] = action.payload;
             if (!error) {
@@ -250,64 +177,47 @@ const requestSlice = createSlice({
                 state.error = error;
             }
         },
-        [getRequest.rejected]: (state, action) => {
-            state.loading = false;
-            state.error = action.payload;
-        },
-        [getMyRequest.pending]: (state, action) => {
-            state.loading = true;
-        },
-        [getMyRequest.fulfilled]: (state, action) => {
-            state.loading = false;
-            const [result, error] = action.payload;
-            if (!error) {
-                state.myRequestData = result.data;
-            } else {
-                state.error = error;
-            }
-        },
-        [getMyRequest.rejected]: (state, action) => {
-            state.loading = false;
-            state.error = action.payload;
-        },
-        [getUserRequest.pending]: (state, action) => {
-            state.loading = true;
-        },
-        [getUserRequest.fulfilled]: (state, action) => {
-            state.loading = false;
-            const [result, error] = action.payload;
-            if (!error) {
-                state.allRequestData = result.data;
-            } else {
-                state.error = error;
-            }
-        },
-        [getUserRequest.rejected]: (state, action) => {
+        [getHoliday.rejected]: (state, action) => {
             state.loading = false;
             state.error = action.payload;
         },
 
-        [postRequest.pending]: (state, action) => {
+        [postHoliday.pending]: (state, action) => {
             state.loading = true;
         },
-        [postRequest.fulfilled]: (state, action) => {
+        [postHoliday.fulfilled]: (state, action) => {
             state.loading = false;
             const [result, error] = action.payload;
             if (!error) {
-                state.requestResult = result.data;
-                state.allRequestData.push(result.data);
+                state.holidayResult= (result.data);
             } else {
                 state.error = error;
             }
         },
-        [postRequest.rejected]: (state, action) => {
+        [postHoliday.rejected]: (state, action) => {
             state.loading = false;
             state.error = action.payload;
         },
-        [patchRequest.pending]: (state, action) => {
+        [patchHoliday.pending]: (state, action) => {
             state.loading = true;
         },
-        [patchRequest.fulfilled]: (state, action) => {
+        [patchHoliday.fulfilled]: (state, action) => {
+            state.loading = false;
+            const [result, error] = action.payload;
+            if (!error) {
+                state.holidayResult = result.data;
+            } else {
+                state.error = error;
+            }
+        },
+        [patchHoliday.rejected]: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
+        [deleteHoliday.pending]: (state, action) => {
+            state.loading = true;
+        },
+        [deleteHoliday.fulfilled]: (state, action) => {
             state.loading = false;
             const [result, error] = action.payload;
             if (!error) {
@@ -316,12 +226,12 @@ const requestSlice = createSlice({
                 state.error = error;
             }
         },
-        [patchRequest.rejected]: (state, action) => {
+        [deleteHoliday.rejected]: (state, action) => {
             state.loading = false;
             state.error = action.payload;
         },
     }
 })
 
-const { reducer } = requestSlice;
+const { reducer, actions } = holidaySlice;
 export default reducer;

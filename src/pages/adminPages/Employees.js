@@ -96,7 +96,7 @@ export default class Employees extends Component {
                                                 const [userData, error] = data;
                                                 this.history.push(`/users/edit/${id}`,
                                                     {
-                                                        userData: userData.user,
+                                                        userData: userData.data,
                                                         method: "patch"
                                                     }
                                                 )

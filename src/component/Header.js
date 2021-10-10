@@ -11,7 +11,7 @@ export default class Header extends Component {
         const dispatch = this.props.dispatch;
         return (
             <Box  sx={{ width: "100%", position:"relative"}}>
-                <AppBar position="sticky" sx={{ width: "100%" }} color="light">
+                <AppBar position="sticky" sx={{ width: auth.isAuthenticated() ?"calc(100vw - 200px)"  :"100vw"}}color="light">
                     <Toolbar>
                         <Box sx={{ flexGrow: 1 }}>
                             <img src={gurzuLogo} alt="Gurzu logo" width={120} />
