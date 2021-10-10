@@ -4,7 +4,8 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { getAttendance, postAttendance, patchAttendance } from '../../features/attendance/attendanceSlice';
 import { gradientCollection, } from '../../utils/theme';
-import { Paper, List, ListSubheader, ListItem, ListItemText, Typography, Box } from '@mui/material';
+import { Paper, List, ListSubheader, ListItem, ListItemText, Typography, Box, Stack } from '@mui/material';
+import { getHolidays } from '../../features/holiday/holidaySlice';
 
 export default class Dashboard extends Component {
 
@@ -21,6 +22,7 @@ export default class Dashboard extends Component {
 
     componentDidMount() {
         this.dispatch(getAttendance())
+        this.dispatch(getHolidays())
     }
 
 
@@ -73,7 +75,11 @@ export default class Dashboard extends Component {
                 <Button
                     variant="contained"
                     sx={{
-                        marginRight:6,
+                        marginRight: 6,
+                        background: gradientCollection.gradientPurple.main,
+                        "&:hover": {
+                            transform: "scale(1.1)",
+                        }
                     }}
                     onClick={() => {
                         this.clockOut(attendanceList) ?
@@ -109,59 +115,104 @@ export default class Dashboard extends Component {
                     }}
                 >
                     <Button variant="contained"
-                        sx={{
-                            background: gradientCollection.gradientPurple.main,
-                            "&:hover": {
-                                transform: "scale(1.1)",
-                            }
-                        }}>
+                    >
                         Schedule A Leave
                     </Button>
                 </Link>
 
-                <Paper
-                sx={{
-                    maxWidth: "30vw",
-                    marginTop: 4
-                }}>
-                    <Link
-                        to={{
-                            pathname: "/attendance"
-                        }}
-                        style={{
-                            textDecoration: "none",
+                <Stack direction="row">
+                    <Paper
+                        sx={{
+                            maxWidth: "30vw",
+                            marginTop: 4
+                        }}>
+                        <Link
+                            to={{
+                                pathname: "/attendance"
+                            }}
+                            style={{
+                                textDecoration: "none",
+                            }}>
+
+                            <List
+                                sx={{
+                                    minHeight: "200px",
+                                    minWidth: "200px",
+
+                                    maxHeight: "60vh",
+                                    overflow: "auto"
+                                }}
+                                subheader={
+                                    <>
+                                        <ListSubheader component="div" id="nested-list-subheader">
+                                            Attendance History
+                                        </ListSubheader>
+                                        <Divider />
+                                    </>
+                                }>
+                                {this.props.attendance.allAttendanceData.map((item, index) => {
+                                    return (
+                                        <>
+                                            <Divider />
+                                            <ListItem key={index}>
+                                                <ListItemText>
+                                                    <Typography variant="body1">
+                                                        {`Date : ${item.att_date}`}
+                                                    </Typography>
+                                                    <Typography variant="body2">
+                                                        {`Clock In : ${item.clock_in ? item.clock_in.slice(11, 19) : "---"}`}
+                                                    </Typography>
+                                                    <Typography variant="body2">
+                                                        {`ClockOut : ${item.clock_out ? item.clock_out.slice(11, 19) : "---"}`}
+                                                    </Typography>
+                                                </ListItemText>
+                                            </ListItem>
+                                            <Divider />
+                                        </>
+                                    )
+                                })}
+                            </List>
+                        </Link>
+                    </Paper>
+
+
+                    <Paper
+                        sx={{
+                            maxWidth: "30vw",
+                            marginTop: 4,
+                            marginLeft: 10
                         }}>
 
                         <List
                             sx={{
                                 minHeight: "200px",
                                 minWidth: "200px",
-                                
+
                                 maxHeight: "60vh",
                                 overflow: "auto"
                             }}
                             subheader={
                                 <>
-                                <ListSubheader component="div" id="nested-list-subheader">
-                                    Attendance History
-                                </ListSubheader>
-                                <Divider/>
+                                    <ListSubheader component="div" id="nested-list-subheader">
+                                        Attendance History
+                                    </ListSubheader>
+                                    <Divider />
                                 </>
                             }>
-                            {this.props.attendance.allAttendanceData.map((item, index) => {
+                            {this.props.holiday.allHolidayData.map((item, index) => {
                                 return (
                                     <>
                                         <Divider />
                                         <ListItem key={index}>
                                             <ListItemText>
                                                 <Typography variant="body1">
-                                                    {`Date : ${item.att_date}`}
+                                                    {`${item.title}`}
                                                 </Typography>
                                                 <Typography variant="body2">
-                                                    {`Clock In : ${item.clock_in?item.clock_in.slice(11,19): "---"}`}
+                                                    {`${item.date}`}
                                                 </Typography>
                                                 <Typography variant="body2">
-                                                    {`ClockOut : ${item.clock_out? item.clock_out.slice(11,19): "---"}`}
+                                                    {`Description : ${item.description}`}
                                                 </Typography>
                                             </ListItemText>
                                         </ListItem>
@@ -170,15 +221,16 @@ export default class Dashboard extends Component {
                                 )
                             })}
                         </List>
-                    </Link>
-                </Paper>
+
+                    </Paper>
+                </Stack>
             </Box>
         )
     }
 };
 
 const mapStateToProps = (state) => {
-    return { userDetail: state.userDetail, attendance: state.attendance }
+    return { userDetail: state.userDetail, attendance: state.attendance, holiday: state.holiday }
 };
 
 Dashboard = connect(mapStateToProps)(Dashboard);
