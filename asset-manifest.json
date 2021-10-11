@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/Attendance-Mgmt/static/css/main.05d598bb.chunk.css",
+    "main.js": "/Attendance-Mgmt/static/js/main.220e4e2f.chunk.js",
+    "main.js.map": "/Attendance-Mgmt/static/js/main.220e4e2f.chunk.js.map",
+    "runtime-main.js": "/Attendance-Mgmt/static/js/runtime-main.0ba50cde.js",
+    "runtime-main.js.map": "/Attendance-Mgmt/static/js/runtime-main.0ba50cde.js.map",
+    "static/js/2.c80b032a.chunk.js": "/Attendance-Mgmt/static/js/2.c80b032a.chunk.js",
+    "static/js/2.c80b032a.chunk.js.map": "/Attendance-Mgmt/static/js/2.c80b032a.chunk.js.map",
+    "index.html": "/Attendance-Mgmt/index.html",
+    "static/css/main.05d598bb.chunk.css.map": "/Attendance-Mgmt/static/css/main.05d598bb.chunk.css.map",
+    "static/js/2.c80b032a.chunk.js.LICENSE.txt": "/Attendance-Mgmt/static/js/2.c80b032a.chunk.js.LICENSE.txt",
+    "static/media/401.890e6c54.jpg": "/Attendance-Mgmt/static/media/401.890e6c54.jpg",
+    "static/media/404.b50b6b05.jpg": "/Attendance-Mgmt/static/media/404.b50b6b05.jpg",
+    "static/media/gurzuLogo.706ca432.svg": "/Attendance-Mgmt/static/media/gurzuLogo.706ca432.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.0ba50cde.js",
+    "static/js/2.c80b032a.chunk.js",
+    "static/css/main.05d598bb.chunk.css",
+    "static/js/main.220e4e2f.chunk.js"
+  ]
+}
