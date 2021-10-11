@@ -66,7 +66,7 @@ export default class Attendance extends Component {
                 ...elem,
                 clock_in: elem.clock_in !== null ? elem.clock_in.slice(11, 19) : null,
                 clock_out: elem.clock_out !== null ? elem.clock_out.slice(11, 19) : null,
-
+                leave_status: elem.leave_status? "on a leave" : "none"
             }
         });
         let clockOut = this.inOutToggle(attendanceList);
