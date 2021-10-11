@@ -4,9 +4,9 @@ import { getCookie, setCookie } from '../../utils/cookies';
 
 const auth = {
     login:(attributes,callback) => {
-        setCookie("token", attributes.auth_token, 30);
-        setCookie("role",attributes.role, 30);
-        setCookie("userId", attributes.id, 30);
+        setCookie("token", attributes.auth_token, 400);
+        setCookie("role",attributes.role, 400);
+        setCookie("userId", attributes.id, 400);
         callback();
     },
 

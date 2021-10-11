@@ -2,6 +2,32 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { getCookie } from "../../utils/cookies";
 import { axiosInstance } from "../../config/axios.config";
 
+export const getStartTimer = createAsyncThunk(
+        "get/timer",
+        async (payload) => {
+            try {
+                const url = "start_timer";
+                const AUTHTOKEN = getCookie("token");
+                axiosInstance.defaults.headers.common["Authorization"] = AUTHTOKEN;
+                const result = await axiosInstance.get(url);
+                return [result.data, null];
+            }
+            catch (error) {
+                if (error.response) {
+                    const { data, status, headers } = error.response;
+                    return [null, { data, status, headers }]
+                } else if (error.request) {
+                    return [null, error.request]
+                } else {
+                    return [null, error.message]
+                }
+
+            }
+
+        }
+    )
+
+
 export const getAllAttendance = createAsyncThunk(
         "get/allAttendance",
         async (payload) => {
@@ -249,6 +275,23 @@ const attendanceSlice = createSlice({
             }
         },
         [patchAttendance.rejected]: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
+        [deleteAttendance.pending]: (state, action) => {
+            state.loading = true;
+        },
+        [deleteAttendance.fulfilled]: (state, action) => {
+            state.loading = false;
+            const [result, error] = action.payload;
+            if (!error) {
+                state.attendanceResult = result.data;
+                state.allAttendanceData[state.allAttendanceData.length - 1] = result.data
+            } else {
+                state.error = error;
+            }
+        },
+        [deleteAttendance.rejected]: (state, action) => {
             state.loading = false;
             state.error = action.payload;
         },

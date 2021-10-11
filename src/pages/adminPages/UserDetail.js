@@ -4,8 +4,11 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import Message from '../../component/Message';
 import CustomPaginationActionsTable from '../../component/Table';
-import { getUserAttendance, patchAttendance, postAttendance } from '../../features/attendance/attendanceSlice';
-import { fetchUserDetail } from '../../features/user/userDetailSlice';
+import { fetchAllUsers } from '../../features/allUser/allUserSlice';
+import { deleteAttendance, getUserAttendance, patchAttendance, postAttendance } from '../../features/attendance/attendanceSlice';
+import { deleteUser, fetchUserDetail } from '../../features/user/userDetailSlice';
+
+
 
 export default class UserDetail extends Component {
     constructor(props) {
@@ -33,14 +36,21 @@ export default class UserDetail extends Component {
             this.setState({
                 messageTitle: "Attendance Successfully Recorded",
                 messageSeverity: "success",
-                messageVisibility: "block",
+                messageVisibility: "flex",
             })
 
-        } else {
+        }else if(error.data){
             this.setState({
                 messageTitle: error.data.message,
                 messageSeverity: "warning",
-                messageVisibility: "block",
+                messageVisibility: "flex",
+            })
+        }
+         else {
+            this.setState({
+                messageTitle: "oops!! Something Went Wrong",
+                messageSeverity: "warning",
+                messageVisibility: "flex",
             })
 
         }
@@ -68,7 +78,10 @@ export default class UserDetail extends Component {
         const userDetails = this.props.data;
         const attendanceFields = ["att_date", "clock_in", "clock_out", "leave_status"]
         let attendanceList = this.props.allAttendanceData;
-        attendanceList= (attendanceList.map(elem => {
+        attendanceList = attendanceList.map(elem => {
+            return {...elem, leave_status: elem.leave_status? "on a leave" : "none"}
+        })
+        attendanceList = (attendanceList.map(elem => {
             return {
                 ...elem,
                 clock_in: elem.clock_in !== null ? elem.clock_in.slice(11, 19) : null,
@@ -98,7 +111,9 @@ export default class UserDetail extends Component {
                         variant="rounded"
                         sx={{ width: "15vw", height: "auto" }} />
                     <Divider orientation="vertical" />
-                    <Paper>
+                    <Paper sx={{
+                        padding: 2
+                    }}>
                         <Typography variant="h6">
                             ID: {userDetails.id} <br />
                             Name: {userDetails.name}
@@ -116,46 +131,55 @@ export default class UserDetail extends Component {
                         </Typography>
                     </Paper>
                 </Stack>
-                <Box sx={{margin: 2, marginBottom: 0}}>
+                <Box sx={{ margin: 2, marginBottom: 0 }}>
+                    <Button
+                        variant="contained"
+                        sx={{ margin: 2, marginLeft: 0 }}
+                        onClick={() => {
+                            this.clockOut(attendanceList) ?
+                                this.dispatch(patchAttendance({ attId: this.latestAttendance(attendanceList).id, data: { user_id: this.userId } }))
+                                    .unwrap()
+                                    .then((promiseResult) => {
+                                        const [result, error] = promiseResult;
+                                        this.promiseHandler(error);
+                                        this.dispatch(getUserAttendance(this.userId))
+                                    })
+                                :
+                                this.dispatch(postAttendance({ user_id: this.userId }))
+                                    .unwrap()
+                                    .then((promiseResult) => {
+                                        const [result, error] = promiseResult
+                                        this.promiseHandler(error);
+                                        this.dispatch(getUserAttendance(this.userId))
+                                    })
+                        }}>
+                        {this.clockOut(attendanceList) ? "Clock Out" : "Clock In"}
+                    </Button>
                     <CustomPaginationActionsTable
                         data={attendanceList}
                         fields={attendanceFields}
                         buttons={[
                             {
                                 type: "delete",
-                                callback: () => { }
+                                callback: (id) => {
+                                    console.log(id)
+                                    this.dispatch(deleteAttendance({attId: id}))
+                                            .unwrap()
+                                            .then(promiseResult => {
+                                                const [result, error] = promiseResult;
+                                                this.promiseHandler(error);
+                                                this.dispatch(getUserAttendance(this.userId));
+                                            })
+                                }
                             }
                         ]} />
                 </Box>
-                <Button
-                    variant="contained"
-                    sx= {{margin: 2}}
-                    onClick={() => {
-                        this.clockOut(attendanceList) ?
-                            this.dispatch(patchAttendance({ attId: this.latestAttendance(attendanceList).id, data: { user_id: this.userId } }))
-                                .unwrap()
-                                .then((promiseResult) => {
-                                    const [result, error] = promiseResult;
-                                    this.promiseHandler(error);
-                                    this.dispatch(getUserAttendance(this.userId))
-                                })
-                            :
-                            this.dispatch(postAttendance({ user_id: this.userId }))
-                                .unwrap()
-                                .then((promiseResult) => {
-                                    const [result, error] = promiseResult
-                                    this.promiseHandler(error);
-                                    this.dispatch(getUserAttendance(this.userId))
-                                })
-                    }}>
-                    {this.clockOut(attendanceList) ? "Clock Out" : "Clock In"}
-                </Button>
             </Box>
         )
     }
 }
 const mapStateToProps = (state) => {
-    return { ...state.userDetail, ...state.attendance }
+    return { ...state.userDetail, ...state.attendance, allUser: state.allUser }
 }
 
 UserDetail = connect(mapStateToProps)(UserDetail);

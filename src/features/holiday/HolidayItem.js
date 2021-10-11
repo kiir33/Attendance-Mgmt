@@ -41,19 +41,19 @@ const HolidayItem = ({ holiday }) => {
           severity: messageSeverity,
           title: message, message: ""
         }}
-        display={messageVisibility ? "block" : "none"} />
+        display={messageVisibility ? "flex" : "none"} />
 
       <Card sx={{ minWidth: 275, margin: 4 }}>
         <CardContent>
 
-          <Typography variant="h5" component="div">
+          <Typography variant="h6">
             {holiday.title}
           </Typography>
           <Typography sx={{ mb: 1.5 }} color="text.secondary">
             {holiday.date}
           </Typography>
           <Typography variant="body2">
-            <p>{holiday.descriptions}</p>
+            {holiday.descriptions}
           </Typography>
         </CardContent>
         <CardActions>

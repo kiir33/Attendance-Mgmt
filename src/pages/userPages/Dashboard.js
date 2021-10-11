@@ -31,14 +31,14 @@ export default class Dashboard extends Component {
             this.setState({
                 messageTitle: "Attendance Successfully Recorded",
                 messageSeverity: "success",
-                messageVisibility: "block",
+                messageVisibility: "flex",
             })
 
         } else {
             this.setState({
                 messageTitle: error.data.message,
                 messageSeverity: "warning",
-                messageVisibility: "block",
+                messageVisibility: "flex",
             })
 
         }

@@ -55,19 +55,19 @@ const RequestForm = (props) => {
 
             setMessage("Request Sent")
             setMessageSeverity("success")
-            setMessageVisibility("block")
+            setMessageVisibility("flex")
 
 
         } else if(error.data.message) {
 
             setMessage("oops!! Something Went Wrong, Cannot request leave")
             setMessageSeverity("warning")
-            setMessageVisibility("block")
+            setMessageVisibility("flex")
 
         } else {
             setMessage("cannot update current request")
             setMessageSeverity("warning")
-            setMessageVisibility("block")
+            setMessageVisibility("flex")
         }
         setTimeout(() => {
             setMessage("")
@@ -89,7 +89,9 @@ const RequestForm = (props) => {
             <form onSubmit={(event) => {
                 handleSubmit(event);
             }}>
-                <Stack direction="row">
+                <Stack direction="row" sx={{
+                    padding: 4
+                }}>
                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                         <DatePicker
                             label="From"
@@ -119,17 +121,21 @@ const RequestForm = (props) => {
                     label="Reason"
                     value={remarks}
                     multiline
-                    fullWidth
                     rows="5"
                     onChange={(event) => {
                         setRemarks(event.target.value);
                     }}
+                    sx={{
+                        mx: 4,
+                        width: 0.5
+                    }}
                 />
-                <Divider />
                 <Button
                     variant="contained"
                     type="submit"
-                    margin={4}
+                    sx={{
+                        m: 2
+                    }}
                 >
                     Send
                 </Button>

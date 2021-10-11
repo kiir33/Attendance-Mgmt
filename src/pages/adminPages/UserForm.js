@@ -151,7 +151,7 @@ const UserForm = (props) => {
                     severity: messageSeverity,
                     title: message, message: ""
                 }}
-                display={messageVisibility ? "block" : "none"} />
+                display={messageVisibility ? "flex" : "none"} />
             <Container
                 maxWidth="sm"
                 sx={{

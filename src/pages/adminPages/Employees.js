@@ -30,14 +30,14 @@ export default class Employees extends Component {
             this.setState({
                 messageTitle: "User Succesfully Deleted",
                 messageSeverity: "success",
-                messageVisibility: "block",
+                messageVisibility: "flex",
             })
 
         } else {
             this.setState({
                 messageTitle: error.data.message,
                 messageSeverity: "warning",
-                messageVisibility: "block",
+                messageVisibility: "flex",
             })
 
         }
@@ -73,6 +73,9 @@ export default class Employees extends Component {
                             }}
                             style={{ textDecoration: "none" }}>
                             <Button
+                            sx={{
+                                marginBottom: 4
+                            }}
                                 variant="contained"
                             >
                                 Add new user

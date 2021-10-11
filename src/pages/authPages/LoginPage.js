@@ -53,7 +53,7 @@ const LoginPage = (props) => {
   return (
     <Box sx={{ height: "100vh" }}>
       <Header />
-      <Message values={{ severity: "error", title: "", message: state.auth.errorMessage }} display={messageVisibility ? "block" : "none"} />
+      <Message values={{ severity: "error", title: "", message: state.auth.errorMessage }} display={messageVisibility ? "flex" : "none"} />
       <Container
         maxWidth="xs"
         sx={{

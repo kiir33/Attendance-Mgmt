@@ -56,7 +56,7 @@ const ResetPasswordPage = (props) => {
   return (
     <Box sx={{ height: "100vh" }}>
       <Header />
-      <Message values={{ severity: messageSeverity, title: "", message: message }} display={messageVisibility ? "block" : "none"} />
+      <Message values={{ severity: messageSeverity, title: "", message: message }} display={messageVisibility ? "flex" : "none"} />
       <Container
         maxWidth="xs"
         sx={{

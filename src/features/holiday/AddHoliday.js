@@ -66,12 +66,12 @@ const AddHoliday = (props) => {
           severity: messageSeverity,
           title: message, message: ""
         }}
-        display={messageVisibility ? "block" : "none"} />
+        display={messageVisibility ? "flex" : "none"} />
 
       <form onSubmit={(e) => {
         handleSubmit(e)
       }}>
-        <Stack>
+        <Stack sx={{padding: 4, width: 0.6}}>
           <TextField
             margin="normal"
             id="title"
@@ -91,11 +91,14 @@ const AddHoliday = (props) => {
             value={description}
             onChange={(e) => {
               setDescription(e.target.value)
-            }
-            }
+            }}
+            sx={{
+              marginBottom: 4
+            }}
           />
           <LocalizationProvider dateAdapter={AdapterDateFns}>
             <DatePicker
+            
               label="Date"
               value={date}
               onChange={(newValue) => {
@@ -104,10 +107,11 @@ const AddHoliday = (props) => {
               renderInput={(params) => <TextField {...params} />}
             />
           </LocalizationProvider>
-        </Stack>
         <Button variant="contained"
+        sx={{width:0.2, marginTop: 4}}
           type="submit"
         >Add to list</Button>
+        </Stack>
 
       </form>
     </>

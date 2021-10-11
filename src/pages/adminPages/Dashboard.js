@@ -1,10 +1,10 @@
 import { Component } from 'react'
 import { connect } from 'react-redux';
 import { Box } from '@mui/system';
-import { getAllAttendance } from '../../features/attendance/attendanceSlice';
+import { getAllAttendance, getStartTimer } from '../../features/attendance/attendanceSlice';
 import { getAllRequest } from '../../features/request/requestSlice';
 import { fetchAllUsers } from '../../features/allUser/allUserSlice';
-import { Card, CardContent, CardMedia, Divider, Icon, List, ListItem, ListItemText, ListSubheader, Paper, Stack, Typography } from '@mui/material';
+import { Button, Card, CardContent, CardMedia, Divider, Icon, List, ListItem, ListItemText, ListSubheader, Paper, Stack, Typography } from '@mui/material';
 import { Message, SupervisorAccount, Storage } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 import Unauthorized from '../pages/Unauthorized'
@@ -67,7 +67,14 @@ export default class Dashboard extends Component {
         } else {
             return (
                 <Box margin={5}>
-                    <h1>AdminDashBoard</h1>
+                    <h2>AdminDashBoard</h2>
+                    <Button
+                        variant="contained"
+                        onClick={() => {
+                            this.dispatch(getStartTimer());
+                        }}>
+                        Start Clock
+                    </Button>
                     <Box sx={{
                         border: 1,
                         display: "flex",
@@ -180,7 +187,7 @@ export default class Dashboard extends Component {
                                     {this.filterByPendingRequest(this.props.request.allRequestData).map((item, index) => {
                                         return (
                                             <ListItem key={index}>
-                                                <Divider/>
+                                                <Divider />
                                                 <ListItemText>
                                                     <Typography variant="body1" color="dark.main">
                                                         {this.props.allUser.mapIdToName[item.user_id]}

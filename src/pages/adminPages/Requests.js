@@ -26,14 +26,14 @@ export default class Requests extends Component {
             this.setState({
                 messageTitle: "Attendance Successfully Recorded",
                 messageSeverity: "success",
-                messageVisibility: "block",
+                messageVisibility: "flex",
             })
 
         } else {
             this.setState({
                 messageTitle: error.data.message,
                 messageSeverity: "warning",
-                messageVisibility: "block",
+                messageVisibility: "flex",
             })
 
         }
@@ -51,7 +51,8 @@ export default class Requests extends Component {
         let requestList = this.props.allRequestData.map(elem => {
             return {
                 ...elem,
-                user_id: this.props.allUser.mapIdToName[elem.user_id]
+                user_id: this.props.allUser.mapIdToName[elem.user_id],
+                approved_by: this.props.allUser.mapIdToName[elem.approved_by]
             }
         });
 
@@ -76,6 +77,7 @@ export default class Requests extends Component {
                         },
                         {
                             type: "Approve",
+                            
                             callback: (id) => {
                                 this.dispatch(approveRequest(id))
                                     .unwrap()

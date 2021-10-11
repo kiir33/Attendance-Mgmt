@@ -31,20 +31,20 @@ export default class Attendance extends Component {
             this.setState({
                 messageTitle: "Record Deleted",
                 messageSeverity: "success",
-                messageVisibility: "block"
+                messageVisibility: "flex"
             })
 
         } else if (error.data.message) {
             this.setState({
                 message: JSON.stringify(error.data.message),
                 messageSeverity: "Warning",
-                messageVisibility: "block"
+                messageVisibility: "flex"
             })
         } else {
             this.setState({
                 message: "oops!! Something Went Wrong",
                 messageSeverity: "Warning",
-                messageVisibility: "block"
+                messageVisibility: "flex"
             })
         }
         setTimeout(() => {
@@ -58,7 +58,6 @@ export default class Attendance extends Component {
 
     render() {
         let attendanceList = this.props.allAttendanceData;
-
         if (attendanceList.length) {
             attendanceList = (attendanceList.map(elem => {
                 return {
@@ -66,6 +65,7 @@ export default class Attendance extends Component {
                     clock_in: elem.clock_in !== null ? elem.clock_in.slice(11, 19) : null,
                     clock_out: elem.clock_out !== null ? elem.clock_out.slice(11, 19) : null,
                     user_id: this.props.allUser.mapIdToName[elem.user_id],
+                    leave_status: elem.leave_status? "on a leave" : "none"
                 }
             })
             )
@@ -87,7 +87,8 @@ export default class Attendance extends Component {
                         data={attendanceList}
                         fields={attendanceFields}
                         buttons={[{ type: "delete", callback: (id) => { 
-                            this.dispatch(deleteAttendance({attId:id}))
+                            console.log(id)
+                            this.dispatch(deleteAttendance(id))
                             .unwrap()
                             .then(promiseResult=> {
                                 const [result, error] = promiseResult;

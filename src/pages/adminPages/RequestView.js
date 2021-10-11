@@ -1,4 +1,4 @@
-import { Box, Typography, Divider } from '@mui/material'
+import { Box, Typography, Divider, Paper } from '@mui/material'
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import { getRequest } from '../../features/request/requestSlice';
@@ -20,8 +20,10 @@ export default class RequestView extends Component {
             <Box sx={{
                 p:3,
                 lineHeight: "20px",
-                maxWidth: "30vw"
+                maxWidth: "30vw",
             }}>
+                <Paper elevation={2}
+                sx={{padding: 4}}>
                 <Typography variant="h6">
                     ID: {requestDetail.id} <br />
                 </Typography>
@@ -36,6 +38,7 @@ export default class RequestView extends Component {
                     Approval Status: {requestDetail.approval_status ? requestDetail.approval_status : "Pending"}<br />
                     Approved By: {requestDetail.approved_by ? "Super Admin" : "---"}
                 </Typography>
+                </Paper>
             </Box>
         )
     }

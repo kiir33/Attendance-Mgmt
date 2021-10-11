@@ -41,14 +41,14 @@ export default class Attendance extends Component {
             this.setState({
                 messageTitle: "Attendance Successfully Recorded",
                 messageSeverity: "info",
-                messageVisibility: "block",
+                messageVisibility: "flex",
             })
 
         } else {
             this.setState({
                 messageTitle: error.data.message,
                 messageSeverity: "warning",
-                messageVisibility: "block",
+                messageVisibility: "flex",
             })
 
         }

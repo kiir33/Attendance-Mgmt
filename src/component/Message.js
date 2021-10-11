@@ -3,16 +3,16 @@ import React, { Component } from 'react'
 
 export default class Message extends Component {
     render() {
-        const {severity, title, message} = this.props.values;
+        const { severity, title, message } = this.props.values;
         const display = this.props.display;
         return (
-            <Box sx={{zIndex: 3}}>
-            <Alert severity={severity} sx={{display: display, position: "fixed", bottom: 20, right: 20}} variant="filled" >
-                <AlertTitle>
+            <Box >
+                <Alert severity={severity} sx={{ display: display, position: "fixed", bottom: 20, right: 20 , zIndex:9}} variant="filled" >
+
                     {title}
-                </AlertTitle>
-                {message}
-            </Alert>
+
+                    {message}
+                </Alert>
             </Box>
         )
     }

@@ -110,7 +110,7 @@ export default function CustomPaginationActionsTable(props) {
             <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
                 <TableHead>
                     <TableRow>
-                        {columns.map((field, index) => <TableCell key={index} align={index !== 0 ? "right" : "left"}>{field}</TableCell>)}
+                        {columns.map((field, index) => <TableCell key={index} align={index !== 0 ? "right" : "left"}>{field.replace("_"," ").toUpperCase()}</TableCell>)}
                         {buttons.map((field, index) => <TableCell key={index} ></TableCell>)}
                     </TableRow>
                 </TableHead>
@@ -174,7 +174,9 @@ export default function CustomPaginationActionsTable(props) {
                                                             :
                                                             <Button
                                                                 variant="contained"
-                                                                onClick={() => { button.callback(row.id) }}
+                                                                onClick={() => { button.callback(row.id)
+                                                                }}
+                                                                disabled={row.approval_status!=="pending"}
                                                             >
                                                                 {button.type}
                                                             </Button>
